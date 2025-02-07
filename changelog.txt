@@ -1,4 +1,11 @@
-﻿1.5 Beta 1 
+﻿1.6
+ - Reduced memory consumption by 99%, there is no need to create new table on every frame.
+ - Refactored code, made global variable local whenever possible, removed pointless functions,
+ inlined some functions, renamed some functions and variables for readability,
+ merged layouts into main file (Otari)
+ - 2 new options: invert direction and detach 9th symbol (Hunter's Mark, attached to other symbols by default now)
+
+1.5 Beta 1 
 
 - A new button added that works like the other ones but it uses hunters mark instead of  raid symbols.
 

@@ -97,5 +97,4 @@
 	<CheckButton name="RaidTargetFrame7Button" parent="UIParent" id="7" inherits="BananaButtonTemplate" hidden="false"/>
 	<CheckButton name="RaidTargetFrame8Button" parent="UIParent" id="8" inherits="BananaButtonTemplate" hidden="false"/>
 	<CheckButton name="RaidTargetFrame9Button" parent="UIParent" id="9" inherits="BananaButtonTemplate" hidden="false"/>
-	<GameTooltip name="BananaTooltip" frameStrata="LOW" toplevel="true" movable="true" parent="UIParent" inherits="GameTooltipTemplate" visible="false" />
 </Ui>

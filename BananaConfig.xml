@@ -1350,7 +1350,7 @@
             <Anchors>
               <Anchor point="TOPLEFT">
                 <Offset>
-                  <AbsDimension x="26" y="-338" />
+                  <AbsDimension x="26" y="-345" />
                 </Offset>
               </Anchor>
             </Anchors>
@@ -1394,7 +1394,7 @@
             <Anchors>
               <Anchor point="TOPLEFT">
                 <Offset>
-                  <AbsDimension x="26" y="-303" />
+                  <AbsDimension x="26" y="-318" />
                 </Offset>
               </Anchor>
             </Anchors>
@@ -1531,7 +1531,7 @@
               </Anchor>
             </Anchors>
             <Scripts>
-              <OnClick>Banana_ResetAll();</OnClick>
+              <OnClick>Banana_Default();</OnClick>
             </Scripts>
             <NormalTexture file="Interface\Buttons\UI-Panel-Button-Up">
               <TexCoords left="0" right="0.625" top="0" bottom="0.6875" />
@@ -1595,7 +1595,7 @@
             <Anchors>
               <Anchor point="TOPLEFT">
                 <Offset>
-                  <AbsDimension x="26" y="-266" />
+                  <AbsDimension x="26" y="-255" />
                 </Offset>
               </Anchor>
             </Anchors>
@@ -1631,6 +1631,44 @@
             <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
             <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
             <DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+          </CheckButton>
+          <CheckButton name="$parentFlip" inherits="OptionsCheckButtonTemplate">
+            <Size x="32" y="32"/>
+            <HitRectInsets>
+                <AbsInset left="0" right="-50" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Anchors>
+              <Anchor point="BOTTOM">
+                  <Offset x="-105" y="69"/>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnLoad>
+                getglobal(this:GetName().."Text"):SetText("Invert")
+              </OnLoad>
+              <OnClick>
+                BananaConfig_FlipToggle()
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentDetach" inherits="OptionsCheckButtonTemplate">
+            <Size x="32" y="32"/>
+            <HitRectInsets>
+                <AbsInset left="0" right="-70" top="0" bottom="0"/>
+            </HitRectInsets>
+            <Anchors>
+              <Anchor point="LEFT" relativeTo="$parentFlip" relativePoint="RIGHT">
+                  <Offset x="50" y="0"/>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnLoad>
+                getglobal(this:GetName().."Text"):SetText("Detach Hunter's mark")
+              </OnLoad>
+              <OnClick>
+                BananaConfig_DetachToggle()
+              </OnClick>
+            </Scripts>
           </CheckButton>
           <CheckButton name="$parentCheckButtonShowInRaid">
             <Size>
