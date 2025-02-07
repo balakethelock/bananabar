@@ -1,316 +1,199 @@
-BANANA_SYMBOL_COLOR1 = "00f7f26c";
-BANANA_SYMBOL_COLOR2 = "00f69218";
-BANANA_SYMBOL_COLOR3 = "00cb32dd";
-BANANA_SYMBOL_COLOR4 = "000fb20a";
-BANANA_SYMBOL_COLOR5 = "008cb0c5";
-BANANA_SYMBOL_COLOR6 = "00007aff";
-BANANA_SYMBOL_COLOR7 = "00d7422e";
-BANANA_SYMBOL_COLOR8 = "00e7e4d9";
+local YELLOW = "|c00f7f26c"
+local ORANGE = "|c00f69218"
+local WHITE = "|c00e7e4d9"
+local MAGENTA = "|c00cb32dd"
+local GREEN = "|c000fb20a"
+local LGREEN = "|c00c0ffc0"
+local BLUE = "|c00007aff"
+local LBLUE = "|c008cb0c5"
+local RED = "|c00d7422e"
 
-BANANA_PRINT_COLOR = "00c0ffc0";
-BANANA_PRINT_FORMAT = "|c"..BANANA_PRINT_COLOR.."[|c"..BANANA_SYMBOL_COLOR4.."Banana|c"..BANANA_SYMBOL_COLOR4.."Bar|r|c"..BANANA_PRINT_COLOR.."] %s|r";
+local FORMAT_PRINT = LGREEN.."["..GREEN.."BananaBar"..LGREEN.."] %s"..FONT_COLOR_CODE_CLOSE
 
+-- Bindings
+BINDING_HEADER_BANANA_PLUGINNAME = "BananaBar Raid Target Symbols"
+BINDING_NAME_BANANA_TARGET_SYMBOL1 = "Target Symbol 1 ("..RAID_TARGET_1..")"
+BINDING_NAME_BANANA_TARGET_SYMBOL2 = "Target Symbol 2 ("..RAID_TARGET_2..")"
+BINDING_NAME_BANANA_TARGET_SYMBOL3 = "Target Symbol 3 ("..RAID_TARGET_3..")"
+BINDING_NAME_BANANA_TARGET_SYMBOL4 = "Target Symbol 4 ("..RAID_TARGET_4..")"
+BINDING_NAME_BANANA_TARGET_SYMBOL5 = "Target Symbol 5 ("..RAID_TARGET_5..")"
+BINDING_NAME_BANANA_TARGET_SYMBOL6 = "Target Symbol 6 ("..RAID_TARGET_6..")"
+BINDING_NAME_BANANA_TARGET_SYMBOL7 = "Target Symbol 7 ("..RAID_TARGET_7..")"
+BINDING_NAME_BANANA_TARGET_SYMBOL8 = "Target Symbol 8 ("..RAID_TARGET_8..")"
+BINDING_NAME_BANANA_TARGET_SYMBOL9 = "Target Symbol 9 (Huntersmark)"
 
-BINDING_HEADER_BANANA_PLUGINNAME = "BananaBar Raid Target Symbols";
-BINDING_NAME_BANANA_TARGET_SYMBOL1 = "Target Symbol 1 ("..RAID_TARGET_1..")";
-BINDING_NAME_BANANA_TARGET_SYMBOL2 = "Target Symbol 2 ("..RAID_TARGET_2..")";
-BINDING_NAME_BANANA_TARGET_SYMBOL3 = "Target Symbol 3 ("..RAID_TARGET_3..")";
-BINDING_NAME_BANANA_TARGET_SYMBOL4 = "Target Symbol 4 ("..RAID_TARGET_4..")";
-BINDING_NAME_BANANA_TARGET_SYMBOL5 = "Target Symbol 5 ("..RAID_TARGET_5..")";
-BINDING_NAME_BANANA_TARGET_SYMBOL6 = "Target Symbol 6 ("..RAID_TARGET_6..")";
-BINDING_NAME_BANANA_TARGET_SYMBOL7 = "Target Symbol 7 ("..RAID_TARGET_7..")";
-BINDING_NAME_BANANA_TARGET_SYMBOL8 = "Target Symbol 8 ("..RAID_TARGET_8..")";
-BINDING_NAME_BANANA_TARGET_SYMBOL9 = "Target Symbol 9 (Huntersmark)";
+-- Saved Variables
+BANANA_HIDE_UNUSED_BUTTONS = nil
+BANANA_BUTTON_LAYOUT = nil
+BANANA_BUTTON_SCALE = nil
+BANANA_HIDE_BUTTON_FRAMES = nil
+BANANA_DISABLE_SOUND = 1
+BANANA_DISABLE_ERROR_TEXT = 1
+BANANA_GREY_OUT_DEATH = 1
+BANANA_POS = nil
+BANANA_SHOW_IN_RAID = nil
+BANANA_SHOW_IN_PARTY = nil
+BANANA_SHOW_OUT_OF_GROUP = nil
+BANANA_SHOW_EXTRA_INFO = nil
 
---"Interface\TargetingFrame\UI-RaidTargetingIcons"
-local snipershot = "Interface\\Icons\\Ability_Hunter_SniperShot";
-local superwow = SetAutoloot and true or false
-BANANA_HIDE_UNUSED_BUTTONS = nil;
-BANANA_BUTTON_LAYOUT = nil;
-BANANA_BUTTON_SCALE = nil;
-BANANA_HIDE_BUTTON_FRAMES = nil;
-BANANA_DISABLE_SOUND = nil;
-BANANA_DISABLE_ERROR_TEXT = nil
-BANANA_GREY_OUT_DEATH = nil;
-BANANA_POS = nil;
-BANANA_SHOW_IN_RAID = nil;
-BANANA_SHOW_IN_PARTY = nil;
-BANANA_SHOW_OUT_OF_GROUP = nil;
-BANANA_SHOW_EXTRA_INFO = nil;
+-- Slash Commands
+SLASH_BANANA1 = "/bananabar"
+SLASH_BANANA2 = "/bb"
+SLASH_BANANABAR1 = "/banana"
+SLASH_BANANABAR2 = "/bbr"
+SLASH_BANANATARGET1 = "/bbtarget"
+SLASH_BANANATARGET2 = "/bananatarget"
+SLASH_BANANATARGET3 = "/bananabartarget"
+SLASH_BANANATARGET4 = "/bbrtarget"
 
-SLASH_BANANA1 = "/bananabar";
-SLASH_BANANA2 = "/bb"; 
-
-SLASH_BANANABAR1 = "/banana";
-SLASH_BANANABAR2 = "/bbr"; 
-
-SLASH_BANANATARGET1 = "/bbtarget";
-SLASH_BANANATARGET2 = "/bananatarget";
-SLASH_BANANATARGET3 = "/bananabartarget";
-SLASH_BANANATARGET4 = "/bbrtarget";
-
-local BANANA_READY = nil;
-	
-local raidTargetStatus =
-{
-	[1] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-	[2] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-	[3] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-	[4] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-	[5] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-	[6] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-	[7] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-	[8] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-	[9] = {["Count"] = 0,["Target"] = nil,["Players"] = {},},
-}
-
-local BananaShaguPlates = nil
 local raidTargetIconTexCoords = {}
-raidTargetIconTexCoords[1] = { ULx = 0, ULy = 0}
-raidTargetIconTexCoords[2] = { ULx = 0.25, ULy = 0}
-raidTargetIconTexCoords[3] = { ULx = 0.5, ULy = 0}
-raidTargetIconTexCoords[4] = { ULx = 0.75, ULy = 0}
-raidTargetIconTexCoords[5] = { ULx = 0, ULy = 0.25}
-raidTargetIconTexCoords[6] = { ULx = 0.25, ULy = 0.25}
-raidTargetIconTexCoords[7] = { ULx = 0.5, ULy = 0.25}
-raidTargetIconTexCoords[8] = { ULx = 0.75, ULy = 0.25}
+raidTargetIconTexCoords[1] = { ULx = 0, 	ULy = 0 	}
+raidTargetIconTexCoords[2] = { ULx = 0.25,  ULy = 0 	}
+raidTargetIconTexCoords[3] = { ULx = 0.5, 	ULy = 0 	}
+raidTargetIconTexCoords[4] = { ULx = 0.75, 	ULy = 0 	}
+raidTargetIconTexCoords[5] = { ULx = 0, 	ULy = 0.25 	}
+raidTargetIconTexCoords[6] = { ULx = 0.25, 	ULy = 0.25 	}
+raidTargetIconTexCoords[7] = { ULx = 0.5, 	ULy = 0.25 	}
+raidTargetIconTexCoords[8] = { ULx = 0.75, 	ULy = 0.25 	}
 
-BANANA_ICON = nil;
+local huntersMark = "Interface\\Icons\\Ability_Hunter_SniperShot"
+local superwow = SetAutoloot and true or false
+local shaguPlates = nil
+local icons = {}
 
 function Banana_InitArrays()
-	if not BANANA_ICON then
-		BANANA_ICON = {};
-		local i;
-		for i = 1, 9, 1 do
-			BANANA_ICON[i] = {};
-			BANANA_ICON[i].FrameIcon = getglobal("RaidTargetFrame"..i.."ButtonIcon");
-			BANANA_ICON[i].FrameButton = getglobal("RaidTargetFrame"..i.."Button");
-			BANANA_ICON[i].FrameFlash = getglobal("RaidTargetFrame"..i.."ButtonFlash");
-			BANANA_ICON[i].FrameHotKey = getglobal("RaidTargetFrame"..i.."ButtonHotKey");
-			BANANA_ICON[i].FrameName = getglobal("RaidTargetFrame"..i.."ButtonName");
-			BANANA_ICON[i].FrameCount = getglobal("RaidTargetFrame"..i.."ButtonCount");
-			BANANA_ICON[i].FrameNormalTexture = getglobal("RaidTargetFrame"..i.."ButtonNormalTexture");
-			BANANA_ICON[i].FrameMobName = getglobal("RaidTargetFrame"..i.."ButtonMobName");
-            BANANA_ICON[i].FrameTargetSymbol = getglobal("RaidTargetFrame"..i.."ButtonTargetSymbol");
-			BANANA_ICON[i].Count = 0;
-			BANANA_ICON[i].Target = nil;
-			BANANA_ICON[i].Players = {};
-			BANANA_ICON[i].Info = nil;
-			BANANA_ICON[i].Debuff = nil;
-			BANANA_ICON[i].MovingButton = 1;
-			BANANA_ICON[i].IsDeath = nil;
-			BANANA_ICON[i].MyTarget = nil;
+	for i = 1, 9 do
+		icons[i] = {}
+		icons[i].FrameIcon = getglobal("RaidTargetFrame"..i.."ButtonIcon")
+		icons[i].FrameButton = getglobal("RaidTargetFrame"..i.."Button")
+		icons[i].FrameFlash = getglobal("RaidTargetFrame"..i.."ButtonFlash")
+		icons[i].FrameHotKey = getglobal("RaidTargetFrame"..i.."ButtonHotKey")
+		icons[i].FrameName = getglobal("RaidTargetFrame"..i.."ButtonName")
+		icons[i].FrameCount = getglobal("RaidTargetFrame"..i.."ButtonCount")
+		icons[i].FrameNormalTexture = getglobal("RaidTargetFrame"..i.."ButtonNormalTexture")
+		icons[i].FrameMobName = getglobal("RaidTargetFrame"..i.."ButtonMobName")
+		icons[i].FrameTargetSymbol = getglobal("RaidTargetFrame"..i.."ButtonTargetSymbol")
+		icons[i].Count = 0
+		icons[i].Target = nil
+		icons[i].Info = nil
+		icons[i].Debuff = nil
+		icons[i].MovingButton = 1
+		icons[i].IsDeath = nil
+		icons[i].MyTarget = nil
+		icons[i].Players = {}
+		for j = 1, 40 do
+			icons[i].Players[j] = { Name = "", Color = { r = .0, g = .0, b = .0 }}
 		end
 	end
 end
 
-function Banana_UpdateButton(index)
-	if BANANA_ICON[index].MyTarget == 1 then
-		BANANA_ICON[index].FrameButton:SetChecked(1);
-	else
-		BANANA_ICON[index].FrameButton:SetChecked(0);
-	end
-	
-	if BANANA_ICON[index].IsDeath == 1 and BANANA_GREY_OUT_DEATH == 1 then
-		BANANA_ICON[index].FrameButton:SetAlpha(0.33);
-	else
-        if BANANA_HIDE_UNUSED_BUTTONS == 1 and (not raidTargetStatus[index].Target) then
-            Banana_HideButton(BANANA_ICON[index].FrameButton);
-        else
-            BANANA_ICON[index].FrameButton:SetAlpha(1);
-            BANANA_ICON[index].FrameButton:Show();
-        end
-	end
-	
-	if BANANA_HIDE_BUTTON_FRAMES == 1 then
-		BANANA_ICON[index].FrameNormalTexture:Hide();
-	else
-		BANANA_ICON[index].FrameNormalTexture:Show();
-	end
-	
-	if raidTargetStatus[index].Target and BANANA_SHOW_EXTRA_INFO == 1 then
-        BANANA_ICON[index].FrameMobName:SetText(raidTargetStatus[index].Target);
-		BANANA_ICON[index].FrameMobName:Show();
-        if raidTargetStatus[index].TargetSymbol and raidTargetStatus[index].TargetSymbol ~= 0 then        
-            Banana_TexCoord(BANANA_ICON[index].FrameTargetSymbol,raidTargetStatus[index].TargetSymbol)    
-            BANANA_ICON[index].FrameTargetSymbol:Show();
-        else
-            BANANA_ICON[index].FrameTargetSymbol:Hide();
-        end
-	else
-		BANANA_ICON[index].FrameMobName:SetText();
-		BANANA_ICON[index].FrameMobName:Hide();
-        BANANA_ICON[index].FrameTargetSymbol:Hide();
-	end
-	
+local function Banana_Print(msg)
+	local strx = string.format(FORMAT_PRINT, tostring(msg))
+	DEFAULT_CHAT_FRAME:AddMessage(strx)
 end
 
-
-function Banana_Print(msg)
-	if not DEFAULT_CHAT_FRAME then 
-		return 
+local function Banana_Error(msg)
+	if BANANA_DISABLE_ERROR_TEXT ~= 1 then
+		local strx = string.format(FORMAT_PRINT, tostring(msg))
+		DEFAULT_CHAT_FRAME:AddMessage(strx)
 	end
-
-	local strx = string.format(BANANA_PRINT_FORMAT,tostring(msg)); 
-
-	DEFAULT_CHAT_FRAME:AddMessage(strx);
 end
 
-function Banana_Debug(msg)
-	if not DEFAULT_CHAT_FRAME then 
-		return 
-	end
-
-	local strx = string.format(BANANA_PRINT_FORMAT,tostring(msg)); 
-
-	DEFAULT_CHAT_FRAME:AddMessage(strx);
+local function InGroupOrRaid()
+	return ((GetNumPartyMembers() + GetNumRaidMembers()) > 0)
 end
-
-
 
 function Banana_OnLoad()
-	this:RegisterEvent("ADDON_LOADED");
-	SlashCmdList["BANANA"] = Banana_Command;
-	SlashCmdList["BANANABAR"] = Banana_Command;
-	SlashCmdList["BANANATARGET"] = Banana_TargetCommand;
+	this:RegisterEvent("ADDON_LOADED")
+	SlashCmdList["BANANA"] = Banana_Toggle
+	SlashCmdList["BANANABAR"] = Banana_Toggle
+	SlashCmdList["BANANATARGET"] = Banana_TargetCommand
 end
 
 function Banana_OnEvent()
-	if ( event == "ADDON_LOADED" ) and arg1 == "bananabar"then
-		
-		if not BANANA_READY then
-			Banana_InitArrays();
-		end
-		Banana_Print("Banana Raid Symbols loaded. Type /bb, /bbr, /banana or /bananabar to open config panel.");
+	if ( event == "ADDON_LOADED" ) and arg1 == "bananabar" then
+		this:UnregisterEvent("ADDON_LOADED")
+		Banana_InitArrays()
+		Banana_Print("Banana Raid Symbols loaded. Type /bb, /bbr, /banana or /bananabar to open config panel.")
 		Banana_Print("Use Ctrl + RightClick to move buttons")
 		Banana_Print("Use Alt + LeftClick to clear all existing symbols")
 
 		if not BANANA_SHOW_EXTRA_INFO then
-			--Banana_Print("First start of BananaBar detected, showing config window.");
-			UIDropDownMenu_Initialize(BananaConfigFrameComboBoxLayout, Banana_ComboBoxLayout_Initialize); 
-			Banana_ResetAll()
-			BananaConfigFrame:Show();
+			UIDropDownMenu_Initialize(BananaConfigFrameComboBoxLayout, Banana_ComboBoxLayout_Initialize)
+			Banana_Default()
+			BananaConfigFrame:Show()
 		else
-			if not BANANA_READY then
-				Banana_UpdateScale();
-				Banana_Layout();
-				Banana_ReloadFramePositions();
-				UIDropDownMenu_Initialize(BananaConfigFrameComboBoxLayout, Banana_ComboBoxLayout_Initialize); 
-                Banana_UpdateDialogFromVariables();
-			end
-		end
-		BANANA_READY = true;
-	end
-end
-
-local ticker = 0;
-local debugticker = 0;
-
-function Banana_OnUpdate(elapsed)
-	ticker = ticker + elapsed;
-	if ticker > 0.1 then
-		ticker = ticker -0.1;
-		Banana_OnUpdateTick();
-	end
-	if ticker > 0.1 then
-		ticker = 0;
-	end
-
-	debugticker = debugticker + elapsed;
-	if debugticker > 1 then
-		debugticker = debugticker -1;
-		--Banana_OnUpdateDebug();
-	end
-	if debugticker > 1 then
-		debugticker = 0;
-	end
-end
-
-BANANA_CLEAR_PLAYER_SYMBOL_TRY = 1;
-
-function Banana_OnUpdateTick()
-	if BANANA_READY then
-		Banana_UpdateStatus();
-        Banana_CtRaMainTankUpdate();
-	end
-    
-	if BANANA_CLEAR_PLAYER_SYMBOL then
-		if BANANA_CLEAR_PLAYER_SYMBOL > 0 then
-			BANANA_CLEAR_PLAYER_SYMBOL = BANANA_CLEAR_PLAYER_SYMBOL - 1;
-			if Banana_GetSymbol("PLAYER") then
-				--Banana_Print("Clearing own symbol again try "..BANANA_CLEAR_PLAYER_SYMBOL_TRY.." (fix for a wow bug)");
-				BANANA_CLEAR_PLAYER_SYMBOL_TRY = BANANA_CLEAR_PLAYER_SYMBOL_TRY+1;
-				Banana_SetSymbol("PLAYER",0);
-			else
-				BANANA_CLEAR_PLAYER_SYMBOL_TRY = 1;
-			end
-			if BANANA_CLEAR_PLAYER_SYMBOL == 0 and Banana_GetSymbol("PLAYER") then
-				--Banana_Print("Clearing own symbol failed");
-				BANANA_CLEAR_PLAYER_SYMBOL_TRY = 1;
-			end
+			Banana_UpdateScale()
+			Banana_Layout()
+			Banana_ReloadFramePositions()
+			UIDropDownMenu_Initialize(BananaConfigFrameComboBoxLayout, Banana_ComboBoxLayout_Initialize)
+			Banana_UpdateDialogFromVariables()
 		end
 	end
-	
 end
---/script Banana_TexCoord(RaidTargetFrame2ButtonTargetSymbol,5)
-function Banana_TexCoord(icon,index)
+
+local attempts = 0
+function Banana_OnUpdate()
+	if (this.tick or 0.1) > GetTime() then
+		return
+	else
+		this.tick = GetTime() + 0.1
+	end
+	Banana_UpdateStatus()
+    Banana_CtRaMainTankUpdate()
+	if attempts > 0 then
+		Banana_SetSymbol("player", 0)
+		attempts = attempts - 1
+	end
+end
+
+local function Banana_TexCoord(icon,index)
     if index == 9 then
-        icon:SetTexture("Interface\\AddOns\\Bananabar\\Images\\HuntermarkArrow");            
-        icon:SetTexCoord(0, 1, 0, 1);
-        return;
+        icon:SetTexture("Interface\\AddOns\\Bananabar\\Images\\HuntermarkArrow")
+        icon:SetTexCoord(0, 1, 0, 1)
+        return
     end
-    local button = UnitPopupButtons["RAID_TARGET_"..index];
-    local x1 = button.tCoordLeft;
-	local y1 = button.tCoordTop;
-	local x2 = button.tCoordRight;
-	local y2 = button.tCoordBottom;
-    
-    icon:SetTexture("Interface/TargetingFrame/UI-RaidTargetingIcons");            
-	icon:SetTexCoord(x1, x2, y1, y2);
+    local button = UnitPopupButtons["RAID_TARGET_"..index]
+    local x1 = button.tCoordLeft
+	local y1 = button.tCoordTop
+	local x2 = button.tCoordRight
+	local y2 = button.tCoordBottom
+
+    icon:SetTexture("Interface/TargetingFrame/UI-RaidTargetingIcons")
+	icon:SetTexCoord(x1, x2, y1, y2)
 end
 
-function Banana_IndexFromButtonName(name)
-	return tonumber(string.sub(name,16,-7));
+local function Banana_IndexFromButtonName(name)
+	return tonumber(string.sub(name,16,-7))
 end
-
 
 function Banana_RaidTargetButtonOnLoad()
-	local index = Banana_IndexFromButtonName(this:GetName());
-	local icon = getglobal(this:GetName().."Icon");
+	local index = Banana_IndexFromButtonName(this:GetName())
+	local icon = getglobal(this:GetName().."Icon")
     Banana_TexCoord(icon,index)
-end
-local function InGroupOrRaid()
-	return (GetNumPartyMembers() + GetNumRaidMembers() > 0)
-end
-function Banana_CanSetSymbols()
-	if superwow and not InGroupOrRaid() then return 1 end
-    if GetNumRaidMembers() > 0 then
-        if IsRaidOfficer() or IsRaidLeader() then
-            return 1;
-        end
-    end
-    if GetNumPartyMembers() > 0 then
-        if IsPartyLeader() then
-            return 1;
-        end
-    end
-    return nil;
-end
-function Banana_CanUseSymbols()
-	if superwow and not InGroupOrRaid() then return 1 end
-    if GetNumRaidMembers() > 0 then
-        return 1;
-    end
-    if GetNumPartyMembers() > 0 then
-        return 1;
-    end
-    return nil;
 end
 
 function Banana_ButtonOnClick(mousebutton)
-	local index = tonumber(string.sub(this:GetName(),16,-7));
-	if (IsControlKeyDown()) and mousebutton == "LeftButton" then 
-		if BANANA_HIDE_UNUSED_BUTTONS ~= 1 then Banana_SetRaidSymbol(index)
+	local index = Banana_IndexFromButtonName(this:GetName())
+	if (IsControlKeyDown()) and mousebutton == "LeftButton" then
+		if BANANA_HIDE_UNUSED_BUTTONS ~= 1 then
+			if not UnitExists("target") then
+				Banana_TargetRaidSymbol(index)
+				if not UnitExists("target") then
+					Banana_Error("Not target selected.")
+					Banana_PlayError()
+					return
+				end
+			end
+			
+			local oldindex = (Banana_GetSymbol("target") or 0)
+			if oldindex == index then
+				Banana_SetSymbol("target", 0)
+				Banana_PlayRemove1()
+			else
+				Banana_SetSymbol("target", index)
+			end
+			Banana_UpdateStatus()
 		elseif UnitName("target") == nil or index == GetRaidTargetIndex("target") then
 			Banana_TargetRaidSymbol(index)
 			Banana_SetSymbol("target", 0)
@@ -320,1333 +203,857 @@ function Banana_ButtonOnClick(mousebutton)
 			Banana_SetSymbol("target", 0)
 			TargetLastTarget()
 		end
-		return;
+		return
 	end
-	if (not IsControlKeyDown()) and (not IsAltKeyDown()) and mousebutton == "LeftButton" then 
-		if Banana_CanUseSymbols() then
-			Banana_TargetRaidSymbol(index);
-		else
-            Banana_PlayError();
-			--if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("Raid targets can only be used if you are in raid or party.") end
-			--if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("Type /bb, /bbr or /bananabar to open config window and hide unused buttons.") end
-		end
-		return;
+	if (not IsControlKeyDown()) and (not IsAltKeyDown()) and mousebutton == "LeftButton" then
+		Banana_TargetRaidSymbol(index)
+		return
 	end
-	if (IsControlKeyDown()) and mousebutton == "RightButton" then 
+	if (IsControlKeyDown()) and mousebutton == "RightButton" then
 		--moving
-		return;
+		return
 	end
-	if (IsAltKeyDown()) and mousebutton == "LeftButton" then 
-		Banana_ClearRaidSymbols()
+	if (IsAltKeyDown()) and mousebutton == "LeftButton" then
+		Banana_ClearAllSymbols()
 		return
 	end
 	Banana_Print("Use Ctrl + RightClick to move buttons")
 	Banana_Print("Use Alt + LeftClick to clear all existing symbols")
 end
- 
-local movingbutton = nil;
 
-function Banana_ButtonOnMouseDown(mousebutton)
-	if IsControlKeyDown() and mousebutton == "RightButton" then 
-		local index = Banana_IndexFromButtonName(this:GetName());
-		if not movingbutton then
-			if getglobal("RaidTargetFrame"..BANANA_ICON[index].MovingButton.."Button"):IsMovable() then
-				--Banana_Debug("Start Moving Button "..index);
-				movingbutton = index;
-				getglobal("RaidTargetFrame"..BANANA_ICON[index].MovingButton.."Button"):StartMoving();
+local movingButton = nil
+
+function Banana_ButtonOnMouseDown(mouseButton)
+	if IsControlKeyDown() and mouseButton == "RightButton" then
+		local index = Banana_IndexFromButtonName(this:GetName())
+		if not movingButton then
+			if getglobal("RaidTargetFrame"..icons[index].MovingButton.."Button"):IsMovable() then
+				movingButton = index
+				getglobal("RaidTargetFrame"..icons[index].MovingButton.."Button"):StartMoving()
 			end
 		end
 	end
-	if (not IsControlKeyDown()) and mousebutton == "RightButton" then 
-		Banana_RemoveRaidSymbol(index);
+	if (not IsControlKeyDown()) and mouseButton == "RightButton" then
+		Banana_UpdateStatus()
 	end
 end
 
-function Banana_ButtonOnMouseUp(mousebutton)
-	local index = tonumber(string.sub(this:GetName(),16,-7));
-	if movingbutton then
-		--Banana_Debug("Stop Moving Button "..movingbutton);
-		getglobal("RaidTargetFrame"..BANANA_ICON[movingbutton].MovingButton.."Button"):StopMovingOrSizing();
-		getglobal("RaidTargetFrame"..BANANA_ICON[movingbutton].MovingButton.."Button"):SetUserPlaced(false);
-		Banana_SaveFramePos(getglobal("RaidTargetFrame"..BANANA_ICON[movingbutton].MovingButton.."Button"));
-		movingbutton = nil;
+function Banana_ButtonOnMouseUp()
+	if movingButton then
+		getglobal("RaidTargetFrame"..icons[movingButton].MovingButton.."Button"):StopMovingOrSizing()
+		getglobal("RaidTargetFrame"..icons[movingButton].MovingButton.."Button"):SetUserPlaced(false)
+		Banana_SaveFramePos(getglobal("RaidTargetFrame"..icons[movingButton].MovingButton.."Button"))
+		movingButton = nil
 	end
-	
 end
 
 function Banana_ButtonOnEnter()
 	if ( GetCVar("UberTooltips") == "1" ) then
-		GameTooltip_SetDefaultAnchor(GameTooltip, this);
+		GameTooltip_SetDefaultAnchor(GameTooltip, this)
 	else
-		GameTooltip:SetOwner(button, "ANCHOR_RIGHT");
+		GameTooltip:SetOwner(button, "ANCHOR_RIGHT")
 	end
 
-	local index = tonumber(string.sub(this:GetName(),16,-7));
-	if (raidTargetStatus[index].Target) then
-		GameTooltip:AddLine(raidTargetStatus[index].Target);
-		if raidTargetStatus[index].Count > 0 then
-			GameTooltip:AddLine(raidTargetStatus[index].Count.." Players",0.5,0.5,0.5);
-			local loop;
-			for loop = 1,raidTargetStatus[index].Count,1 do
-				GameTooltip:AddLine(raidTargetStatus[index].Players[loop].Name,raidTargetStatus[index].Players[loop].Color.r,raidTargetStatus[index].Players[loop].Color.g,raidTargetStatus[index].Players[loop].Color.b);
+	local index = Banana_IndexFromButtonName(this:GetName())
+	if (icons[index].Target) then
+		GameTooltip:AddLine(icons[index].Target)
+		if icons[index].Count > 0 then
+			GameTooltip:AddLine(icons[index].Count.." Players",0.5,0.5,0.5)
+			for player = 1,icons[index].Count,1 do
+				if icons[index].Players[player].Name ~= "" then
+					GameTooltip:AddLine(icons[index].Players[player].Name,icons[index].Players[player].Color.r,icons[index].Players[player].Color.g,icons[index].Players[player].Color.b)
+				end
 			end
 		end
-		GameTooltip:Show();
+		GameTooltip:Show()
 	else
-		GameTooltip:SetText("Not used\n/bananabar to open config window\nCtrl+RightMouseButton to move buttons");
+		GameTooltip:SetText("Not used\n/bananabar to open config window\nCtrl+RightMouseButton to move buttons")
 	end
-	
 end
-
-function Banana_ButtonOnLeave()
-	GameTooltip:Hide();
-end
-
-function Banana_SetRaidSymbol(index)
-	if not UnitExists("target") then
-        Banana_TargetRaidSymbol(index);
-        if not UnitExists("target") then
-            --if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("Not target selected.") end
-            Banana_PlayError();
-            return;
-        end
-    end
-    
-    local oldindex = (Banana_GetSymbol("TARGET") or 0);
-	if oldindex == index then
-		Banana_SetSymbol("TARGET", 0)
-		Banana_PlayRemove1();
-	else
-		Banana_SetSymbol("TARGET", index)
-	end
-	Banana_UpdateStatus();
-end
-
-
-
 
 function Banana_TargetRaidSymbol(index)
-  for i = 1, 40, 1 do
-    if Banana_TargetRaidSymbolUnit("raid"..i,index) then
-        return;
-    end
-  end;
-  for i = 1, 4, 1 do
-    if Banana_TargetRaidSymbolUnit("party"..i,index) then
-        return;
-    end
-  end;
-  if Banana_TargetRaidSymbolUnit("player",index) then
-      return;
-  end
-  if Banana_ScanNameplates(index) then
-      return;
-  end
-  if superwow then
-	if Banana_TargetRaidSymbolUnit("mark" .. index, index) then
-		return;
-	end
-  end
-  Banana_PlayError();
-  --if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("Nothing to target") end
-  Banana_UpdateStatus();
-end
-
-function Banana_TargetRaidSymbolUnit(unit,index)
-	if UnitExists(unit) then
-	    if ( Banana_GetSymbol(unit) == index ) then
-	      TargetUnit(unit);
-		  Banana_UpdateStatus();
-	      return 1;
-	    end;
-	
-		if UnitExists(unit.."target") then
-		    if ( Banana_GetSymbol(unit.."target") == index ) then
-		      TargetUnit(unit.."target");
-		      --if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("Target: "..(UnitName(unit.."target") or "<Unknown>")) end
-		      return 1;
-		    end;
+	if superwow then
+		if Banana_TargetRaidSymbolUnit("mark"..index, index) then
+			return
 		end
 	end
-    return nil;
+	for i = 1, 40 do
+		if Banana_TargetRaidSymbolUnit("raid"..i, index) then
+			return
+		end
+	end
+	for i = 1, 4 do
+		if Banana_TargetRaidSymbolUnit("party"..i, index) then
+			return
+		end
+	end
+	if Banana_TargetRaidSymbolUnit("player", index) then
+		return
+	end
+	if Banana_ScanNameplates(index) then
+		return
+	end
+	Banana_PlayError()
+	Banana_Error("Nothing to target")
+	Banana_UpdateStatus()
 end
 
-function Banana_RemoveRaidSymbol(index)
-	Banana_UpdateStatus();
+function Banana_TargetRaidSymbolUnit(unit, index)
+	if UnitExists(unit) then
+	    if ( Banana_GetSymbol(unit) == index ) then
+			TargetUnit(unit)
+			Banana_UpdateStatus()
+			return 1
+	    end
+
+		if UnitExists(unit.."target") then
+		    if ( Banana_GetSymbol(unit.."target") == index ) then
+				TargetUnit(unit.."target")
+				Banana_Error("Target: "..(UnitName(unit.."target") or "<Unknown>"))
+				return 1
+		    end
+		end
+	end
+    return nil
 end
 
-function Banana_UpdateStatusInit()
-	local index;
-	for index = 1, 9, 1 do
-		raidTargetStatus[index].Count = 0;
-    	raidTargetStatus[index].Target = nil;
-    	raidTargetStatus[index].TargetSymbol = nil;
-    	raidTargetStatus[index].Players = {};
-		BANANA_ICON[index].Debuff = nil;
-		BANANA_ICON[index].IsDeath = nil;
-		BANANA_ICON[index].MyTarget = nil;
+local function Banana_Reset()
+	for index = 1, 9 do
+		icons[index].Count = 0
+    	icons[index].Target = nil
+    	icons[index].TargetSymbol = nil
+		for k in pairs(icons[index].Players) do
+			icons[index].Players[k].Name = ""
+			icons[index].Players[k].Color.r = .0
+			icons[index].Players[k].Color.g = .0
+			icons[index].Players[k].Color.b = .0
+		end
+		icons[index].Debuff = nil
+		icons[index].IsDeath = nil
+		icons[index].MyTarget = nil
   	end
 end
 
-
-
-
-function Banana_DebuffCheckAll(target) 
-	local result;
-
-	result = Banana_DebuffCheck(target, "Interface\\Icons\\Spell_Shadow_GatherShadows");
-	if result ~= "" then
-		return result;
-	end
-	
-	return "";
-end
-
-function Banana_DebuffCheck(sUnitname, sBuffname) 
+local function Banana_DebuffCheck(sUnitname, sBuffname)
 	local iIterator = 1
 	while (true) do
-		local debuffTexture, debuffApplications, debuffDispelType = UnitDebuff(sUnitname, iIterator);
+		local debuffTexture, debuffApplications, debuffDispelType = UnitDebuff(sUnitname, iIterator)
 		if not debuffTexture then
-			return "";
+			return ""
 		end
-		--Banana_Print("t;"..debuffTexture);
-		--Banana_Print("u;"..sBuffname);
 		if debuffTexture == sBuffname then
-			return sBuffname;
+			return sBuffname
 		end
 		iIterator = iIterator + 1
 	end
 end
 
-
-function Banana_HideButton(frame)
+local function Banana_HideButton(frame)
     if BananaConfigFrame:IsVisible() then
-        frame:Show();
-        frame:SetAlpha(0.16);
+        frame:Show()
+        frame:SetAlpha(0.16)
     else
-        frame:Hide();
-        frame:SetAlpha(1);
+        frame:Hide()
+        frame:SetAlpha(1)
     end
-    
 end
 
 function Banana_UpdateStatus()
-	local index;
-
 	if GetNumRaidMembers() > 0 then
         if BANANA_SHOW_IN_RAID == 1 then
-            Banana_UpdateStatusInit();
-            Banana_UpdateStatusPlayerLoop("RAID",40);
-			ScanNpcs()
-            Banana_UpdateStatusUpdate();
+            Banana_Reset()
+            Banana_ScanPlayers("raid", 40)
+			Banana_ScanNpcs()
+            Banana_UpdateButtons()
         else
-            for index = 1, 9, 1 do
-                local button = getglobal("RaidTargetFrame"..index.."Button");
+            for index = 1, 9 do
+                local button = getglobal("RaidTargetFrame"..index.."Button")
                 Banana_HideButton(button)
             end
         end
 	elseif GetNumPartyMembers() > 0 then
         if BANANA_SHOW_IN_PARTY == 1 then
-            Banana_UpdateStatusInit();
-            Banana_UpdateStatusPlayerLoop("PARTY",5);
-			ScanNpcs()
-            Banana_UpdateStatusUpdate();
+            Banana_Reset()
+            Banana_ScanPlayers("party", 5)
+			Banana_ScanNpcs()
+            Banana_UpdateButtons()
         else
-            for index = 1, 9, 1 do
-                local button = getglobal("RaidTargetFrame"..index.."Button");
+            for index = 1, 9 do
+                local button = getglobal("RaidTargetFrame"..index.."Button")
                 Banana_HideButton(button)
             end
         end
 	else
         if BANANA_SHOW_OUT_OF_GROUP == 1 then
-            Banana_UpdateStatusInit();
-            Banana_UpdateStatusPlayerLoop("PARTY",5);
-			ScanNpcs()
-            Banana_UpdateStatusUpdate();
+            Banana_Reset()
+            Banana_ScanPlayers("party", 5)
+			Banana_ScanNpcs()
+            Banana_UpdateButtons()
         else
-            for index = 1, 9, 1 do
-                local button = getglobal("RaidTargetFrame"..index.."Button");
+            for index = 1, 9 do
+                local button = getglobal("RaidTargetFrame"..index.."Button")
                 Banana_HideButton(button)
             end
         end
---        Banana_UpdateStatusInit();
---        Banana_UpdateStatusPlayerLoop("PARTY",5);
---        Banana_UpdateStatusUpdate();
---		for index = 1, 9, 1 do
---			local button = getglobal("RaidTargetFrame"..index.."Button");
---			Banana_UpdateButton(index);
---			if BANANA_SHOW_OUT_OF_GROUP == 1 then
---				button:Show();
---			else
---				Banana_HideButton(button);
---			end
---	  	end
-	end	
+	end
 end
 
-function Banana_UpdateStatusPlayerLoop(prefix,count)
-
-  	for i = 1, count, 1 do
-        local loopmember = prefix..i;
-        if loopmember == "PARTY5" or loopmember == "party5" then
-            loopmember = "PLAYER";
+function Banana_ScanPlayers(prefix,count)
+  	for i = 1, count do
+        local loopmember = prefix..i
+        if loopmember == "party5" then
+            loopmember = "player"
         end
         if UnitExists(loopmember) then
-			local loopmembersymbol = (Banana_GetSymbol(loopmember) or 0);
+			local loopmembersymbol = (Banana_GetSymbol(loopmember) or 0)
             if loopmembersymbol ~= 0 then
-                Banana_UpdateTargetSymbol(loopmember,loopmembersymbol);
-		    	raidTargetStatus[loopmembersymbol].Target = UnitName(loopmember);
+                Banana_UpdateTargetSymbol(loopmember,loopmembersymbol)
+		    	icons[loopmembersymbol].Target = UnitName(loopmember)
 				
                 -- loopmember has aggro?
-                if UnitIsUnit(loopmember,loopmember.."TARGETTARGET") then
-					raidTargetStatus[loopmembersymbol].Aggro = true;
+                if UnitIsUnit(loopmember,loopmember.."targettarget") then
+					icons[loopmembersymbol].Aggro = true
 				end
-				Banana_UpdateStatusScanTarget(loopmember,i,loopmembersymbol);
+				Banana_UpdateStatusScanTarget(loopmember,i,loopmembersymbol)
             end
 
-            local loopmembertarget = loopmember.."TARGET";
+            local loopmembertarget = loopmember.."target"
      
             if UnitExists(loopmembertarget) then
-                local symbol = (Banana_GetSymbol(loopmembertarget) or 0);
+                local symbol = (Banana_GetSymbol(loopmembertarget) or 0)
                 if symbol ~= 0 then
-                    Banana_UpdateTargetSymbol(loopmembertarget,symbol);
-                    raidTargetStatus[symbol].Target = UnitName(loopmembertarget);
-                    
-                    raidTargetStatus[symbol].Count = raidTargetStatus[symbol].Count + 1;
-                    raidTargetStatus[symbol].Players[raidTargetStatus[symbol].Count] = {};
-                    raidTargetStatus[symbol].Players[raidTargetStatus[symbol].Count].Name = UnitName(loopmember);
-                    local _, englishClass = UnitClass(loopmember);
-                    raidTargetStatus[symbol].Players[raidTargetStatus[symbol].Count].Color = RAID_CLASS_COLORS[englishClass];
-                    
-                    Banana_UpdateStatusScanTarget(loopmembertarget,i,symbol)
+                    local _, englishClass = UnitClass(loopmember)
+                    Banana_UpdateTargetSymbol(loopmembertarget,symbol)
+                    icons[symbol].Target = UnitName(loopmembertarget)
+                    icons[symbol].Count = icons[symbol].Count + 1
+                    icons[symbol].Players[icons[symbol].Count].Name = UnitName(loopmember)
+                    icons[symbol].Players[icons[symbol].Count].Color.r = RAID_CLASS_COLORS[englishClass].r
+                    icons[symbol].Players[icons[symbol].Count].Color.g = RAID_CLASS_COLORS[englishClass].g
+                    icons[symbol].Players[icons[symbol].Count].Color.b = RAID_CLASS_COLORS[englishClass].b
+					Banana_UpdateStatusScanTarget(loopmembertarget,i,symbol)
                 end
             end
         end
     end
-    
 end
 
-function ScanNpcs()
-	if not superwow then return end
+function Banana_ScanNpcs()
+	if not superwow then
+		return
+	end
 	for i = 1, 8 do
 		local m = "mark" .. i
 		if UnitExists(m) then
-			raidTargetStatus[i].Target = UnitName(m)
+			icons[i].Target = UnitName(m)
 		end
-		if not BANANA_ICON[i].IsDeath then
+		if not icons[i].IsDeath then
 			if UnitIsDead(m) then
-				BANANA_ICON[i].IsDeath = 1;
+				icons[i].IsDeath = 1
 			else
-				BANANA_ICON[i].IsDeath = 0;
+				icons[i].IsDeath = 0
 			end
 		end
 	end
 end
 
 function Banana_UpdateTargetSymbol(unit,symbol)
-    local target = unit.."TARGET";
-    if not raidTargetStatus[symbol].TargetSymbol  then
+    local target = unit.."target"
+    if not icons[symbol].TargetSymbol  then
         if not UnitExists(target) then
-            raidTargetStatus[symbol].TargetSymbol = 0;
+            icons[symbol].TargetSymbol = 0
         else
-            local tts = Banana_GetSymbol(target) or 0;
-            raidTargetStatus[symbol].TargetSymbol = tts;
+            local tts = Banana_GetSymbol(target) or 0
+            icons[symbol].TargetSymbol = tts
         end
     end
 end
+
 function Banana_UpdateStatusScanTarget(targettype,i,index)
-	if not BANANA_ICON[index].Debuff then
-		BANANA_ICON[index].Debuff = Banana_DebuffCheckAll(targettype);
+	if not icons[index].Debuff then
+		icons[index].Debuff = Banana_DebuffCheck(targettype, "Interface\\Icons\\Spell_Shadow_GatherShadows")
 	end
 
-	if not BANANA_ICON[index].IsDeath then
+	if not icons[index].IsDeath then
 		if UnitIsDead(targettype) then
-			BANANA_ICON[index].IsDeath = 1;
+			icons[index].IsDeath = 1
 		else
-			BANANA_ICON[index].IsDeath = 0;
+			icons[index].IsDeath = 0
 		end
 	end
 	
-	if not BANANA_ICON[index].MyTarget then
-		if UnitIsUnit(targettype,"TARGET") then
-			BANANA_ICON[index].MyTarget = 1;
+	if not icons[index].MyTarget then
+		if UnitIsUnit(targettype, "target") then
+			icons[index].MyTarget = 1
 		else
-			BANANA_ICON[index].MyTarget = 0;
+			icons[index].MyTarget = 0
 		end
 	end
 end
 
-function Banana_UpdateStatusUpdate()
-	for index = 1, 9, 1 do
-		local button = getglobal("RaidTargetFrame"..index.."Button");
-		local flash = getglobal("RaidTargetFrame"..index.."ButtonFlash");
-		local count = getglobal("RaidTargetFrame"..index.."ButtonCount");
+function Banana_UpdateButtons()
+	for index = 1, 9 do
+		local button = getglobal("RaidTargetFrame"..index.."Button")
+		local flash = getglobal("RaidTargetFrame"..index.."ButtonFlash")
+		local count = getglobal("RaidTargetFrame"..index.."ButtonCount")
 		
-		if ( raidTargetStatus[index].Target) then
-			count:SetText(tostring(raidTargetStatus[index].Count));
-			count:Show();
-			button:Show();
+		if ( icons[index].Target) then
+			count:SetText(tostring(icons[index].Count))
+			count:Show()
+			button:Show()
 			
-			if BANANA_ICON[index].Debuff ~= "" then
-				flash:ClearAllPoints();
+			if icons[index].Debuff ~= "" then
+				flash:ClearAllPoints()
 				flash:SetPoint("TOPLEFT",button,"TOPLEFT")
-				flash:SetWidth(18);
-				flash:SetHeight(18);
-				flash:SetTexture(BANANA_ICON[index].Debuff);
-				flash:Show();
+				flash:SetWidth(18)
+				flash:SetHeight(18)
+				flash:SetTexture(icons[index].Debuff)
+				flash:Show()
 			else
-				flash:Hide();
+				flash:Hide()
 			end
-			
 		else
-			flash:Hide();
-			count:Hide();
+			flash:Hide()
+			count:Hide()
 		end
-		Banana_UpdateButton(index);
+		if icons[index].MyTarget == 1 then
+			icons[index].FrameButton:SetChecked(1)
+		else
+			icons[index].FrameButton:SetChecked(0)
+		end
+		
+		if icons[index].IsDeath == 1 and BANANA_GREY_OUT_DEATH == 1 then
+			icons[index].FrameButton:SetAlpha(0.33)
+		else
+			if BANANA_HIDE_UNUSED_BUTTONS == 1 and (not icons[index].Target) then
+				Banana_HideButton(icons[index].FrameButton)
+			else
+				icons[index].FrameButton:SetAlpha(1)
+				icons[index].FrameButton:Show()
+			end
+		end
+		
+		if BANANA_HIDE_BUTTON_FRAMES == 1 then
+			icons[index].FrameNormalTexture:Hide()
+		else
+			icons[index].FrameNormalTexture:Show()
+		end
+		
+		if icons[index].Target and BANANA_SHOW_EXTRA_INFO == 1 then
+			icons[index].FrameMobName:SetText(icons[index].Target)
+			icons[index].FrameMobName:Show()
+			if icons[index].TargetSymbol and icons[index].TargetSymbol ~= 0 then        
+				Banana_TexCoord(icons[index].FrameTargetSymbol,icons[index].TargetSymbol)    
+				icons[index].FrameTargetSymbol:Show()
+			else
+				icons[index].FrameTargetSymbol:Hide()
+			end
+		else
+			icons[index].FrameMobName:SetText()
+			icons[index].FrameMobName:Hide()
+			icons[index].FrameTargetSymbol:Hide()
+		end
   	end
 end
 
-
 function Banana_ComboBoxLayout_Initialize()
-	local info; 
+	local info
 
-	info = {}; 
-	info.text = BANANA_LAYOUT1;
-	info.func = Banana_ComboBoxLayout_OnClick; 
-	info.value = 1; 
-	UIDropDownMenu_AddButton(info); 
+	info = {}
+	info.text = BANANA_LAYOUT1
+	info.func = Banana_ComboBoxLayout_OnClick
+	info.value = 1
+	UIDropDownMenu_AddButton(info)
 
-	info = {}; 
-	info.text = BANANA_LAYOUT2;
-	info.func = Banana_ComboBoxLayout_OnClick; 
-	info.value = 2; 
-	UIDropDownMenu_AddButton(info); 
+	info = {}
+	info.text = BANANA_LAYOUT2
+	info.func = Banana_ComboBoxLayout_OnClick
+	info.value = 2
+	UIDropDownMenu_AddButton(info)
 
-	info = {}; 
-	info.text = BANANA_LAYOUT3;
-	info.func = Banana_ComboBoxLayout_OnClick; 
-	info.value = 3; 
-	UIDropDownMenu_AddButton(info); 
+	info = {}
+	info.text = BANANA_LAYOUT3
+	info.func = Banana_ComboBoxLayout_OnClick
+	info.value = 3
+	UIDropDownMenu_AddButton(info)
 
-	info = {}; 
-	info.text = BANANA_LAYOUT4;
-	info.func = Banana_ComboBoxLayout_OnClick; 
-	info.value = 4; 
-	UIDropDownMenu_AddButton(info); 
+	info = {}
+	info.text = BANANA_LAYOUT4
+	info.func = Banana_ComboBoxLayout_OnClick
+	info.value = 4
+	UIDropDownMenu_AddButton(info)
 
-	info = {}; 
-	info.text = BANANA_LAYOUT5;
-	info.func = Banana_ComboBoxLayout_OnClick; 
-	info.value = 5; 
-	UIDropDownMenu_AddButton(info); 
+	info = {}
+	info.text = BANANA_LAYOUT5
+	info.func = Banana_ComboBoxLayout_OnClick
+	info.value = 5
+	UIDropDownMenu_AddButton(info)
 end
 
 function Banana_ComboBoxLayout_OnClick()
-	if not BANANA_READY then
-		return;
-	end
-	UIDropDownMenu_SetSelectedID(BananaConfigFrameComboBoxLayout, this:GetID()); 
+	UIDropDownMenu_SetSelectedID(BananaConfigFrameComboBoxLayout, this:GetID())
 	if BANANA_BUTTON_LAYOUT ~= this:GetID() then
 		BANANA_BUTTON_LAYOUT = this:GetID()
-		Banana_Layout();
+		Banana_Layout()
 	end
 end
 
 function BananaConfig_ValueChangedResize()
-	if BANANA_READY then
-		BANANA_BUTTON_SCALE = this:GetValue();
-		Banana_UpdateScale();
-	end
+	BANANA_BUTTON_SCALE = this:GetValue()
+	Banana_UpdateScale()
 end
 
-
 function Banana_UpdateScale()
-    --Banana_Print("scale:"..(BANANA_BUTTON_SCALE or "?"));
-	Banana_UpdateFrameScale(RaidTargetFrame1Button,BANANA_BUTTON_SCALE / 100)		
-	Banana_UpdateFrameScale(RaidTargetFrame2Button,BANANA_BUTTON_SCALE / 100)		
-	Banana_UpdateFrameScale(RaidTargetFrame3Button,BANANA_BUTTON_SCALE / 100)		
-	Banana_UpdateFrameScale(RaidTargetFrame4Button,BANANA_BUTTON_SCALE / 100)		
-	Banana_UpdateFrameScale(RaidTargetFrame5Button,BANANA_BUTTON_SCALE / 100)		
-	Banana_UpdateFrameScale(RaidTargetFrame6Button,BANANA_BUTTON_SCALE / 100)		
-	Banana_UpdateFrameScale(RaidTargetFrame7Button,BANANA_BUTTON_SCALE / 100)		
-	Banana_UpdateFrameScale(RaidTargetFrame8Button,BANANA_BUTTON_SCALE / 100)		
-	Banana_UpdateFrameScale(RaidTargetFrame9Button,BANANA_BUTTON_SCALE / 100)		
+	Banana_UpdateFrameScale(RaidTargetFrame1Button,BANANA_BUTTON_SCALE / 100)
+	Banana_UpdateFrameScale(RaidTargetFrame2Button,BANANA_BUTTON_SCALE / 100)
+	Banana_UpdateFrameScale(RaidTargetFrame3Button,BANANA_BUTTON_SCALE / 100)
+	Banana_UpdateFrameScale(RaidTargetFrame4Button,BANANA_BUTTON_SCALE / 100)
+	Banana_UpdateFrameScale(RaidTargetFrame5Button,BANANA_BUTTON_SCALE / 100)
+	Banana_UpdateFrameScale(RaidTargetFrame6Button,BANANA_BUTTON_SCALE / 100)
+	Banana_UpdateFrameScale(RaidTargetFrame7Button,BANANA_BUTTON_SCALE / 100)
+	Banana_UpdateFrameScale(RaidTargetFrame8Button,BANANA_BUTTON_SCALE / 100)
+	Banana_UpdateFrameScale(RaidTargetFrame9Button,BANANA_BUTTON_SCALE / 100)
 end
 
 function Banana_UpdateFrameScale(frame,scale)
 	if frame:IsMovable() then
-		frame:ClearAllPoints();
-		Banana_SaveFramePos(frame);
-		frame:SetScale(scale);
-		Banana_LoadFramePos(frame);	
+		frame:ClearAllPoints()
+		Banana_SaveFramePos(frame)
+		frame:SetScale(scale)
+		Banana_LoadFramePos(frame)
 	else
-		frame:SetScale(scale);
+		frame:SetScale(scale)
 	end
-	
 end
-
-
 
 function BananaConfig_ValueChangedShowInRaid()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_SHOW_IN_RAID = 1;
-		else
-			BANANA_SHOW_IN_RAID = 0;
-		end
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_SHOW_IN_RAID = 1
+	else
+		BANANA_SHOW_IN_RAID = 0
 	end
+	Banana_UpdateStatus()
 end
+
 function BananaConfig_ValueChangedShowInParty()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_SHOW_IN_PARTY = 1;
-		else
-			BANANA_SHOW_IN_PARTY = 0;
-		end
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_SHOW_IN_PARTY = 1
+	else
+		BANANA_SHOW_IN_PARTY = 0
 	end
+	Banana_UpdateStatus()
 end
+
 function BananaConfig_ValueChangedShowOutOfGroup()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_SHOW_OUT_OF_GROUP = 1;
-		else
-			BANANA_SHOW_OUT_OF_GROUP = 0;
-		end
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_SHOW_OUT_OF_GROUP = 1
+	else
+		BANANA_SHOW_OUT_OF_GROUP = 0
 	end
+	Banana_UpdateStatus()
 end
 
 function BananaConfig_ValueChangedHideButtonFrames()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_HIDE_BUTTON_FRAMES = 1;
-		else
-			BANANA_HIDE_BUTTON_FRAMES = 0;
-		end
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_HIDE_BUTTON_FRAMES = 1
+	else
+		BANANA_HIDE_BUTTON_FRAMES = 0
 	end
+	Banana_UpdateStatus()
 end
 
 function BananaConfig_ValueChangedDisableSound()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_DISABLE_SOUND = 1;
-		else
-			BANANA_DISABLE_SOUND = 0;
-		end
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_DISABLE_SOUND = 1
+	else
+		BANANA_DISABLE_SOUND = 0
 	end
+	Banana_UpdateStatus()
 end
 
 function BananaConfig_ValueChangedDisableErrorText()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_DISABLE_ERROR_TEXT = 1;
-		else
-			BANANA_DISABLE_ERROR_TEXT = 0;
-		end
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_DISABLE_ERROR_TEXT = 1
+	else
+		BANANA_DISABLE_ERROR_TEXT = 0
 	end
+	Banana_UpdateStatus()
 end
 
 function BananaConfig_ValueChangedGreyOutDeath()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_GREY_OUT_DEATH = 1;
-		else
-			BANANA_GREY_OUT_DEATH = 0;
-		end
-        --Banana_Print("BANANA_GREY_OUT_DEATH="..BANANA_GREY_OUT_DEATH);
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_GREY_OUT_DEATH = 1
+	else
+		BANANA_GREY_OUT_DEATH = 0
 	end
+	Banana_UpdateStatus()
 end
 
 function BananaConfig_ValueChangedShowExtraInfo()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_SHOW_EXTRA_INFO = 1;
-		else
-			BANANA_SHOW_EXTRA_INFO = 0;
-		end
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_SHOW_EXTRA_INFO = 1
+	else
+		BANANA_SHOW_EXTRA_INFO = 0
 	end
+	Banana_UpdateStatus()
 end
-
 
 function BananaConfig_ValueChangedHideUnused()
-	if BANANA_READY then
-		if this:GetChecked() then
-			BANANA_HIDE_UNUSED_BUTTONS = 1;
-		else
-			BANANA_HIDE_UNUSED_BUTTONS = 0;
-		end
-		Banana_UpdateStatus();
+	if this:GetChecked() then
+		BANANA_HIDE_UNUSED_BUTTONS = 1
+	else
+		BANANA_HIDE_UNUSED_BUTTONS = 0
 	end
+	Banana_UpdateStatus()
 end
 
-function Banana_Command(command)
+function Banana_Toggle()
 	if BananaConfigFrame:IsVisible() then
-		BananaConfigFrame:Hide();
+		BananaConfigFrame:Hide()
 	else
-		BananaConfigFrame:Show();
+		BananaConfigFrame:Show()
 	end
-	
 end
 
 function Banana_TargetCommand(arg)
 	arg = tonumber(arg)
 	if arg == nil or arg == "" or arg > 9 or arg < 1 then
-		--if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("/bananatarget number (Star is 1, skull is 8") end
+		Banana_Error("/bananatarget number (Star is 1, skull is 8")
 		return
 	end
 	Banana_TargetRaidSymbol(arg)
 end
 
-function BananaConfig_Close(command)
-	BananaConfigFrame:Hide();
-end
+function Banana_Default()
+	BANANA_SHOW_IN_RAID = 1
+	BANANA_SHOW_IN_PARTY = 1
+	BANANA_SHOW_OUT_OF_GROUP = 1
+	BANANA_HIDE_UNUSED_BUTTONS = 0
+	BANANA_BUTTON_LAYOUT = 3
+	BANANA_BUTTON_SCALE = 100
+	BANANA_HIDE_BUTTON_FRAMES = 1
+	BANANA_DISABLE_SOUND = 1
+	BANANA_DISABLE_ERROR_TEXT = 1
+	BANANA_GREY_OUT_DEATH = 1
+	BANANA_SHOW_EXTRA_INFO = 0
 
-function Banana_ResetAll()
-	--Banana_Print("Loading defaults.");
-    BANANA_SHOW_IN_RAID = 1;
-    BANANA_SHOW_IN_PARTY = 1;
-    BANANA_SHOW_OUT_OF_GROUP = 0;
-	BANANA_HIDE_UNUSED_BUTTONS = 0;
-	BANANA_BUTTON_LAYOUT = 3;
-	BANANA_BUTTON_SCALE = 100;
-	BANANA_HIDE_BUTTON_FRAMES = 1;
-	BANANA_DISABLE_SOUND = 0;
-	BANANA_DISABLE_ERROR_TEXT = 0;
-	BANANA_GREY_OUT_DEATH = 0;
-    BANANA_SHOW_EXTRA_INFO = 1;
-    
-	Banana_UpdateDialogFromVariables();
-	
-    Banana_UpdateScale();
-	RaidTargetFrame1Button:ClearAllPoints();
-	RaidTargetFrame2Button:ClearAllPoints();
-	RaidTargetFrame3Button:ClearAllPoints();
-	RaidTargetFrame4Button:ClearAllPoints();
-	RaidTargetFrame5Button:ClearAllPoints();
-	RaidTargetFrame6Button:ClearAllPoints();
-	RaidTargetFrame7Button:ClearAllPoints();
-	RaidTargetFrame8Button:ClearAllPoints();
-	RaidTargetFrame9Button:ClearAllPoints();
-	Banana_Layout();
+	Banana_UpdateDialogFromVariables()
 
-	local starty = -GetScreenHeight()/5;
-	local startx = GetScreenWidth()/5;
-	local ofsx = -70;
-	local ofsy = 70;
+	Banana_UpdateScale()
+	RaidTargetFrame1Button:ClearAllPoints()
+	RaidTargetFrame2Button:ClearAllPoints()
+	RaidTargetFrame3Button:ClearAllPoints()
+	RaidTargetFrame4Button:ClearAllPoints()
+	RaidTargetFrame5Button:ClearAllPoints()
+	RaidTargetFrame6Button:ClearAllPoints()
+	RaidTargetFrame7Button:ClearAllPoints()
+	RaidTargetFrame8Button:ClearAllPoints()
+	RaidTargetFrame9Button:ClearAllPoints()
+	Banana_Layout()
+
+	local starty = -GetScreenHeight() / 5
+	local startx = GetScreenWidth() / 5
+	local ofsx = -70
+	local ofsy = 70
 
 	BANANA_POS = {
 		["RaidTargetFrame1Button"] = {
-			["x"] = startx-(0*ofsx),
-			["y"] = starty-(0*ofsy),
+			["x"] = startx - (0 * ofsx),
+			["y"] = starty - (0 * ofsy),
 		},
 		["RaidTargetFrame2Button"] = {
-			["x"] = startx-(0*ofsx),
-			["y"] = starty-(1*ofsy),
+			["x"] = startx - (0 * ofsx),
+			["y"] = starty - (1 * ofsy),
 		},
 		["RaidTargetFrame3Button"] = {
-			["x"] = startx-(0*ofsx),
-			["y"] = starty-(2*ofsy),
+			["x"] = startx - (0 * ofsx),
+			["y"] = starty - (2 * ofsy),
 		},
 		["RaidTargetFrame4Button"] = {
-			["x"] = startx-(0*ofsx),
-			["y"] = starty-(3*ofsy),
+			["x"] = startx - (0 * ofsx),
+			["y"] = starty - (3 * ofsy),
 		},
 		["RaidTargetFrame5Button"] = {
-			["x"] = startx-(1*ofsx),
-			["y"] = starty-(0*ofsy),
+			["x"] = startx - (1 * ofsx),
+			["y"] = starty - (0 * ofsy),
 		},
 		["RaidTargetFrame6Button"] = {
-			["x"] = startx-(1*ofsx),
-			["y"] = starty-(1*ofsy),
+			["x"] = startx - (1 * ofsx),
+			["y"] = starty - (1 * ofsy),
 		},
 		["RaidTargetFrame7Button"] = {
-			["x"] = startx-(1*ofsx),
-			["y"] = starty-(2*ofsy),
+			["x"] = startx - (1 * ofsx),
+			["y"] = starty - (2 * ofsy),
 		},
 		["RaidTargetFrame8Button"] = {
-			["x"] = startx-(1*ofsx),
-			["y"] = starty-(3*ofsy),
+			["x"] = startx - (1 * ofsx),
+			["y"] = starty - (3 * ofsy),
 		},
 		["RaidTargetFrame9Button"] = {
-			["x"] = startx-(0.5*ofsx),
-			["y"] = starty-(4*ofsy),
+			["x"] = startx - (0.5 * ofsx),
+			["y"] = starty - (4 * ofsy),
 		},
-	};
-	Banana_ReloadFramePositions();
-end
-
-
-function Banana_TargetSymbol1()
-	Banana_TargetRaidSymbol(1);
-end
-
-function Banana_TargetSymbol2()
-	Banana_TargetRaidSymbol(2);
-end
-
-function Banana_TargetSymbol3()
-	Banana_TargetRaidSymbol(3);
-end
-
-function Banana_TargetSymbol4()
-	Banana_TargetRaidSymbol(4);
-end
-
-function Banana_TargetSymbol5()
-	Banana_TargetRaidSymbol(5);
-end
-
-function Banana_TargetSymbol6()
-	Banana_TargetRaidSymbol(6);
-end
-
-function Banana_TargetSymbol7()
-	Banana_TargetRaidSymbol(7);
-end
-
-function Banana_TargetSymbol8()
-	Banana_TargetRaidSymbol(8);
-end
-
-function Banana_TargetSymbol9()
-	Banana_TargetRaidSymbol(9);
-end
-
-function Banana_ShowDebugInfo()
-   Banana_Print("BANANA_HIDE_UNUSED_BUTTONS "..(BANANA_HIDE_UNUSED_BUTTONS or "<nil>"));
-   Banana_Print("BANANA_BUTTON_LAYOUT "..(BANANA_BUTTON_LAYOUT or "<nil>"));
-   Banana_Print("BANANA_BUTTON_SCALE "..(BANANA_BUTTON_SCALE or "<nil>"));
-   Banana_Print("BANANA_HIDE_BUTTON_FRAMES "..(BANANA_HIDE_BUTTON_FRAMES or "<nil>"));
-	 Banana_Print("BANANA_DISABLE_SOUND "..(BANANA_DISABLE_SOUND or "<nil>"));
-	 Banana_Print("BANANA_DISABLE_ERROR_TEXT "..(BANANA_DISABLE_ERROR_TEXT or "<nil>"));
-   Banana_Print("BANANA_GREY_OUT_DEATH "..(BANANA_GREY_OUT_DEATH or "<nil>"));
-   Banana_Print("BANANA_SHOW_IN_RAID "..(BANANA_SHOW_IN_RAID or "<nil>"));
-   Banana_Print("BANANA_SHOW_IN_PARTY "..(BANANA_SHOW_IN_PARTY or "<nil>"));
-   Banana_Print("BANANA_SHOW_OUT_OF_GROUP "..(BANANA_SHOW_OUT_OF_GROUP or "<nil>"));
-   Banana_Print("BANANA_SHOW_EXTRA_INFO "..(BANANA_SHOW_EXTRA_INFO or "<nil>"));
-    
---    BananaMtSymbolTemplate    
---    CreateFrame("frameType"[ ,"name"][, parent][, "inheritFrame"])   -
-
-    Banana_Print((UnitDebuff("TARGET", 0,0) or "nix"));
-    Banana_Print((UnitDebuff("TARGET", 1,0) or "nix"));
-    Banana_Print((UnitDebuff("TARGET", 2,0) or "nix"));
-    Banana_Print((UnitDebuff("TARGET", 3,0) or "nix"));
-    Banana_Print((UnitDebuff("TARGET", 4,0) or "nix"));
-
-    local spell = nil;
-    local searchid = 1;
-    local tex;
-    repeat
-        tex = GetSpellTexture(searchid, BOOKTYPE_SPELL); 
-
-        
-        Banana_Print(searchid.." "..(tex or "niiil"));
-    
-        if tex == snipershot then
-            Banana_Print("ss");
-            spell,_ = GetSpellName( searchid, BOOKTYPE_SPELL );
-        end
-        
-        searchid = searchid +1;
-        
-    until spell ~= nil or tex == nil;
-    Banana_Print(tex or "texnil");
-    Banana_Print(spell or "spellnil");
-end
-
-function Banana_SpellHuntersmark()
-    local spell = Banana_FindSpellNameByTexture(snipershot);
-    if spell == nil then
-        --if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("Huntersmark Spell not found"); end
-        Banana_PlayError();
-        return;
-    end
-    CastSpellByName(spell);
-end
-
-function Banana_FindSpellNameByTexture(searchtex)
-    local spell = nil;
-    local searchid = 1;
-    local tex;
-    repeat
-        tex = GetSpellTexture(searchid, BOOKTYPE_SPELL); 
-
-        if tex == searchtex then
-            spell,_ = GetSpellName( searchid, BOOKTYPE_SPELL );
-        end
-        
-        searchid = searchid +1;
-        
-    until spell ~= nil or tex == nil;
-    return spell;
+	}
+	Banana_ReloadFramePositions()
 end
 
 function Banana_CtRaMainTankUpdate()
-    Banana_CtRaMainTankUpdateByIndex(1);
-    Banana_CtRaMainTankUpdateByIndex(2);
-    Banana_CtRaMainTankUpdateByIndex(3);
-    Banana_CtRaMainTankUpdateByIndex(4);
-    Banana_CtRaMainTankUpdateByIndex(5);
-    Banana_CtRaMainTankUpdateByIndex(6);
-    Banana_CtRaMainTankUpdateByIndex(7);
-    Banana_CtRaMainTankUpdateByIndex(8);
-    Banana_CtRaMainTankUpdateByIndex(9);
-    Banana_CtRaMainTankUpdateByIndex(10);
+    Banana_CtRaMainTankUpdateByIndex(1)
+    Banana_CtRaMainTankUpdateByIndex(2)
+    Banana_CtRaMainTankUpdateByIndex(3)
+    Banana_CtRaMainTankUpdateByIndex(4)
+    Banana_CtRaMainTankUpdateByIndex(5)
+    Banana_CtRaMainTankUpdateByIndex(6)
+    Banana_CtRaMainTankUpdateByIndex(7)
+    Banana_CtRaMainTankUpdateByIndex(8)
+    Banana_CtRaMainTankUpdateByIndex(9)
+    Banana_CtRaMainTankUpdateByIndex(10)
 end
 
 function Banana_CtRaMainTankUpdateByIndex(mtindex)
-    ctraframe = "CT_RAMTGroupMember"..mtindex.."CastFrame";
+    local ctraframe = "CT_RAMTGroupMember"..mtindex.."CastFrame"
     if getglobal(ctraframe) == nil then
-        --Banana_Print(ctraframe.." not found");
-        return;
+        return
     end
 
-    frameName = "BananaMt"..mtindex;
-    texName = "BananaMt"..mtindex.."Symbol";
+    local frameName = "BananaMt"..mtindex
+    local texName = "BananaMt"..mtindex.."Symbol"
 
-    local f;
-    if getglobal(frameName) == nil then
-        Banana_Print("Creating symbol frame for MainTank "..mtindex);
-        f = CreateFrame("Frame",frameName,getglobal(ctraframe),"BananaMtSymbolTemplate");
-        f:SetFrameStrata("BACKGROUND")
-        f:SetPoint("RIGHT", ctraframe, "LEFT", 0, 0);
-        f:Hide();
+    local f
+	if getglobal(frameName) == nil then
+		f = CreateFrame("Frame", frameName, getglobal(ctraframe), "BananaMtSymbolTemplate")
+		f:SetFrameStrata("BACKGROUND")
+        f:SetPoint("RIGHT", ctraframe, "LEFT", 0, 0)
+        f:Hide()
     else
-        f = getglobal(frameName);
+        f = getglobal(frameName)
     end
 
-    local tex = getglobal(texName);
+    local tex = getglobal(texName)
 
     if CT_RATarget then
         if CT_RATarget.MainTanks then
             if CT_RATarget.MainTanks[mtindex] then
                 if CT_RATarget.MainTanks[mtindex][1] then
-                    if UnitExists("RAID"..CT_RATarget.MainTanks[mtindex][1].."TARGET") then
-                        local idx = (Banana_GetSymbol("RAID"..CT_RATarget.MainTanks[mtindex][1].."TARGET") or 0);
+                    if UnitExists("raid"..CT_RATarget.MainTanks[mtindex][1].."target") then
+                        local idx = (Banana_GetSymbol("raid"..CT_RATarget.MainTanks[mtindex][1].."target") or 0)
                         if idx ~= 0 then
-                            Banana_TexCoord(tex,idx);
-                            f:Show()    
-                            return;
+                            Banana_TexCoord(tex,idx)
+                            f:Show()
+                            return
                         end
-                    end;
+                    end
                 end
             end
         end
     end
-    f:Hide()    
+    f:Hide()
 end
 
-function Banana_ClearRaidSymbols()
-	--Banana_Print("Clearing all raid symbols");
-    Banana_PlayRemoveAll();
-    Banana_SetSymbol("PLAYER",1);
-   	Banana_SetSymbol("PLAYER",2);
-   	Banana_SetSymbol("PLAYER",3);
-   	Banana_SetSymbol("PLAYER",4);
-   	Banana_SetSymbol("PLAYER",5);
-   	Banana_SetSymbol("PLAYER",6);
-   	Banana_SetSymbol("PLAYER",7);
-   	Banana_SetSymbol("PLAYER",8);
-	Banana_SetSymbol("PLAYER",0);
-	BANANA_CLEAR_PLAYER_SYMBOL = 10;
+function Banana_ClearAllSymbols()
+    Banana_PlayRemoveAll()
+	for i = 1, 8 do
+    	Banana_SetSymbol("PLAYER", i)
+	end
+	attempts = 10
 end
 
 function Banana_SaveFramePos(frame)
 	if frame then
 		if frame:GetLeft() and frame:GetBottom() then
 			local framePos = {}
-			framePos.x = frame:GetLeft()*frame:GetScale()
-			framePos.y = frame:GetTop()*frame:GetScale() -GetScreenHeight()
-			--Banana_Print("Top:"..frame:GetTop().." Scale:"..frame:GetScale().." "..frame:GetEffectiveScale().." Scr:"..GetScreenHeight().." Pos:"..framePos.y.." uip:"..UIParent:GetTop().." "..UIParent:GetBottom().." "..UIParent:GetScale())
+			framePos.x = frame:GetLeft() * frame:GetScale()
+			framePos.y = frame:GetTop() * frame:GetScale() - GetScreenHeight()
 			if not BANANA_POS then
-				BANANA_POS = {};
+				BANANA_POS = {}
 			end
-			BANANA_POS[frame:GetName()] = framePos;
-			--Banana_Print("Saving position for "..frame:GetName());
+			BANANA_POS[frame:GetName()] = framePos
 		end
 	end
 end
+
 function Banana_LoadFramePos(frame)
 	if frame then
 		if frame:IsMovable() then
 			if BANANA_POS then
-				framePos = BANANA_POS[frame:GetName()];
+				local framePos = BANANA_POS[frame:GetName()]
 				if framePos then
-					frame:SetPoint("TOPLEFT",UIParent,"TOPLEFT",framePos.x/frame:GetScale(),framePos.y/frame:GetScale())
-					--Banana_Print("Restoring saved position for "..frame:GetName());
-				else
-					--Banana_Print("No saved position for "..frame:GetName());
+					frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", framePos.x / frame:GetScale(), framePos.y / frame:GetScale())
 				end
-			else
-				--Banana_Print("No saved position for "..frame:GetName().." or any other frame");
 			end
-		else
-			--Banana_Print("Dont load saved position for "..frame:GetName()..", no movable frame");
 		end
 	end
 end
 
 function Banana_ReloadFramePositions()
-	Banana_LoadFramePos(RaidTargetFrame1Button);
-	Banana_LoadFramePos(RaidTargetFrame2Button);
-	Banana_LoadFramePos(RaidTargetFrame3Button);
-	Banana_LoadFramePos(RaidTargetFrame4Button);
-	Banana_LoadFramePos(RaidTargetFrame5Button);
-	Banana_LoadFramePos(RaidTargetFrame6Button);
-	Banana_LoadFramePos(RaidTargetFrame7Button);
-	Banana_LoadFramePos(RaidTargetFrame8Button);
-	Banana_LoadFramePos(RaidTargetFrame9Button);
+	Banana_LoadFramePos(RaidTargetFrame1Button)
+	Banana_LoadFramePos(RaidTargetFrame2Button)
+	Banana_LoadFramePos(RaidTargetFrame3Button)
+	Banana_LoadFramePos(RaidTargetFrame4Button)
+	Banana_LoadFramePos(RaidTargetFrame5Button)
+	Banana_LoadFramePos(RaidTargetFrame6Button)
+	Banana_LoadFramePos(RaidTargetFrame7Button)
+	Banana_LoadFramePos(RaidTargetFrame8Button)
+	Banana_LoadFramePos(RaidTargetFrame9Button)
 end
 
-
+local movingConfig = false
 function Banana_HeaderMouseDown()
-	if not movingconfig then
-		--Banana_Print("Start Moving Config Window");
-		movingconfig = true;
-		BananaConfigFrame:StartMoving();
+	if not movingConfig then
+		movingConfig = true
+		BananaConfigFrame:StartMoving()
 	end
 end
 
 function Banana_HeaderMouseUp()
-	if movingconfig then
-		--Banana_Print("Stop Moving Config Window");
-		movingconfig = nil;
-		BananaConfigFrame:StopMovingOrSizing();
+	if movingConfig then
+		movingConfig = false
+		BananaConfigFrame:StopMovingOrSizing()
 	end
 end
 
 function Banana_UpdateDialogFromVariables()
-    UIDropDownMenu_SetSelectedID(BananaConfigFrameComboBoxLayout, BANANA_BUTTON_LAYOUT); 
-	
-    BananaConfigFrameCheckButtonShowInRaid:SetChecked(BANANA_SHOW_IN_RAID == 1);
-    BananaConfigFrameCheckButtonShowInParty:SetChecked(BANANA_SHOW_IN_PARTY == 1);
-    BananaConfigFrameCheckButtonShowOutOfGroup:SetChecked(BANANA_SHOW_OUT_OF_GROUP == 1);
-    BananaConfigFrameCheckButtonHideUnused:SetChecked(BANANA_HIDE_UNUSED_BUTTONS == 1);
-		BananaConfigFrameCheckButtonHideButtonFrames:SetChecked(BANANA_HIDE_BUTTON_FRAMES == 1);
-		BananaConfigFrameCheckButtonDisableSound:SetChecked(BANANA_DISABLE_SOUND == 1);
-		BananaConfigFrameCheckButtonDisableErrorText:SetChecked(BANANA_DISABLE_ERROR_TEXT == 1);
-		BananaConfigFrameCheckButtonGreyOutDeath:SetChecked(BANANA_GREY_OUT_DEATH == 1);
-    BananaConfigFrameCheckButtonShowExtraInfo:SetChecked(BANANA_SHOW_EXTRA_INFO == 1);
-    
-	BananaConfigFrameResizeSlider:SetValue(BANANA_BUTTON_SCALE);
+    UIDropDownMenu_SetSelectedID(BananaConfigFrameComboBoxLayout, BANANA_BUTTON_LAYOUT)
+    BananaConfigFrameCheckButtonShowInRaid:SetChecked(BANANA_SHOW_IN_RAID == 1)
+    BananaConfigFrameCheckButtonShowInParty:SetChecked(BANANA_SHOW_IN_PARTY == 1)
+    BananaConfigFrameCheckButtonShowOutOfGroup:SetChecked(BANANA_SHOW_OUT_OF_GROUP == 1)
+    BananaConfigFrameCheckButtonHideUnused:SetChecked(BANANA_HIDE_UNUSED_BUTTONS == 1)
+	BananaConfigFrameCheckButtonHideButtonFrames:SetChecked(BANANA_HIDE_BUTTON_FRAMES == 1)
+	BananaConfigFrameCheckButtonDisableSound:SetChecked(BANANA_DISABLE_SOUND == 1)
+	BananaConfigFrameCheckButtonDisableErrorText:SetChecked(BANANA_DISABLE_ERROR_TEXT == 1)
+	BananaConfigFrameCheckButtonGreyOutDeath:SetChecked(BANANA_GREY_OUT_DEATH == 1)
+    BananaConfigFrameCheckButtonShowExtraInfo:SetChecked(BANANA_SHOW_EXTRA_INFO == 1)
+	BananaConfigFrameResizeSlider:SetValue(BANANA_BUTTON_SCALE)
 end
 
 function Banana_PlayError()
-	if BANANA_DISABLE_SOUND == 1 then return end
-    PlaySoundFile("Interface\\AddOns\\Bananabar\\Sound\\BananaNo.mp3");
+	if BANANA_DISABLE_SOUND ~= 1 then
+    	PlaySoundFile("Interface\\AddOns\\Bananabar\\Sound\\BananaNo.mp3")
+	end
 end
 function Banana_PlayRemove1()
-	if BANANA_DISABLE_SOUND == 1 then return end
-    PlaySoundFile("Interface\\AddOns\\Bananabar\\Sound\\BananaPlop1.mp3");
+	if BANANA_DISABLE_SOUND ~= 1 then
+    	PlaySoundFile("Interface\\AddOns\\Bananabar\\Sound\\BananaPlop1.mp3")
+	end
 end
+
 function Banana_PlayRemoveAll()
-	if BANANA_DISABLE_SOUND == 1 then return end
-    PlaySoundFile("Interface\\AddOns\\Bananabar\\Sound\\BananaPlop8.mp3");
+	if BANANA_DISABLE_SOUND ~= 1 then
+    	PlaySoundFile("Interface\\AddOns\\Bananabar\\Sound\\BananaPlop8.mp3")
+	end
 end
 
 function Banana_PlaySetSymbol()
-	if BANANA_DISABLE_SOUND == 1 then return end
-    PlaySoundFile("Interface\\AddOns\\Bananabar\\Sound\\BananaSetSymbol.mp3");
+	if BANANA_DISABLE_SOUND ~= 1 then
+    	PlaySoundFile("Interface\\AddOns\\Bananabar\\Sound\\BananaSetSymbol.mp3")
+	end
 end
 
 function Banana_GetSymbol(unit)
-    local result = GetRaidTargetIndex(unit);
-    if (not result) or (result==0) then 
-        if UnitDebuff(unit,1) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,2) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,3) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,4) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,5) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,6) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,7) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,8) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,9) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,10) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,11) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,12) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,13) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,14) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,15) == snipershot then
-            result = 9;
-        elseif UnitDebuff(unit,16) == snipershot then
-            result = 9;
-        end
-    end;
-    return result;
-end
-
-function Banana_SetSymbol(unit,index)
-    if index == 0 then
-        if Banana_CanSetSymbols() then
-            if superwow and not InGroupOrRaid() then SetRaidTarget(unit,index,1) else SetRaidTarget(unit,index) end;
+    local result = GetRaidTargetIndex(unit)
+    if (not result) or (result == 0) then
+		for i = 1, 16 do
+			if UnitDebuff(unit, i) == huntersMark then
+				result = 9
+				break
+			end
 		end
-        return;
-    elseif index <= 8 then
-        if Banana_CanSetSymbols() then
-            if superwow and not InGroupOrRaid() then SetRaidTarget(unit,index,1) else SetRaidTarget(unit,index) end;
-            Banana_PlaySetSymbol();
-		else
-      Banana_PlayError();
-			--if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("Raid targets can only be used if you are in raid or party."); end
-			--if BANANA_DISABLE_ERROR_TEXT ~= 1 then Banana_Print("Type /bb, /bbr or /bananabar to open config window and hide unused buttons."); end
-        end
-		return;
-    elseif index == 9 then
-        Banana_SpellHuntersmark();
-        Banana_PlaySetSymbol();
-
     end
+    return result
 end
 
-Banana_BABA = 0;
+function Banana_SetSymbol(unit, index)
+	if index <= 8 then
+		if superwow and not InGroupOrRaid() then
+			SetRaidTarget(unit, index, 1)
+		else
+			SetRaidTarget(unit, index)
+		end
+		if index ~= 0 then
+			Banana_PlaySetSymbol()
+		end
+	elseif index == 9 then
+		local spell = nil
+		local searchid = 1
+		local tex
+		repeat
+			tex = GetSpellTexture(searchid, BOOKTYPE_SPELL)
+			if tex == huntersMark then
+				spell, _ = GetSpellName(searchid, BOOKTYPE_SPELL)
+			end
+			searchid = searchid + 1
+		until spell ~= nil or tex == nil
 
-function Banana_OnUpdateDebug(unit)
-if Banana_BABA == 0 then
-	Banana_OnUpdateDebug2("target")
-	Banana_OnUpdateDebug2("player")
-	Banana_OnUpdateDebug2("raid1")
-	Banana_OnUpdateDebug2("raid2")
-	Banana_OnUpdateDebug2("raid3")
-	Banana_OnUpdateDebug2("raid4")
-	Banana_OnUpdateDebug2("raid5")
-	Banana_OnUpdateDebug2("raid6")
-	Banana_OnUpdateDebug2("raid7")
+		if spell == nil then
+			Banana_Error("Huntersmark Spell not found")
+			Banana_PlayError()
+			return
+		end
+		CastSpellByName(spell)
+		Banana_PlaySetSymbol()
+	end
 end
-if Banana_BABA == 1 then
-	Banana_OnUpdateDebug2("raid8")
-	Banana_OnUpdateDebug2("raid9")
-	Banana_OnUpdateDebug2("raid10")
-	Banana_OnUpdateDebug2("raid11")
-	Banana_OnUpdateDebug2("raid12")
-	Banana_OnUpdateDebug2("raid13")
-	Banana_OnUpdateDebug2("raid14")
-	Banana_OnUpdateDebug2("raid15")
-end
-if Banana_BABA == 2 then
-	Banana_OnUpdateDebug2("raid16")
-	Banana_OnUpdateDebug2("raid17")
-	Banana_OnUpdateDebug2("raid18")
-	Banana_OnUpdateDebug2("raid19")
-	Banana_OnUpdateDebug2("raid20")
-	Banana_OnUpdateDebug2("raid21")
-	Banana_OnUpdateDebug2("raid22")
-	Banana_OnUpdateDebug2("raid23")
-	Banana_OnUpdateDebug2("raid24")
-	Banana_OnUpdateDebug2("raid25")
-end
-if Banana_BABA == 3 then
-	Banana_OnUpdateDebug2("raid26")
-	Banana_OnUpdateDebug2("raid27")
-	Banana_OnUpdateDebug2("raid28")
-	Banana_OnUpdateDebug2("raid29")
-	Banana_OnUpdateDebug2("raid30")
-	Banana_OnUpdateDebug2("raid31")
-	Banana_OnUpdateDebug2("raid32")
-	Banana_OnUpdateDebug2("raid33")
-	Banana_OnUpdateDebug2("raid34")
-	Banana_OnUpdateDebug2("raid35")
-	Banana_OnUpdateDebug2("raid36")
-	Banana_OnUpdateDebug2("raid37")
-end
-if Banana_BABA == 4 then
-	Banana_OnUpdateDebug2("raid38")
-	Banana_OnUpdateDebug2("raid39")
-	Banana_OnUpdateDebug2("raid40")
-	Banana_OnUpdateDebug2("raid1target")
-	Banana_OnUpdateDebug2("raid2target")
-	Banana_OnUpdateDebug2("raid3target")
-	Banana_OnUpdateDebug2("raid4target")
-	Banana_OnUpdateDebug2("raid5target")
-	Banana_OnUpdateDebug2("raid6target")
-	Banana_OnUpdateDebug2("raid7target")
-	Banana_OnUpdateDebug2("raid8target")
-	Banana_OnUpdateDebug2("raid9target")
-	Banana_OnUpdateDebug2("raid10target")
-	Banana_OnUpdateDebug2("raid11target")
-end
-if Banana_BABA == 5 then
-	Banana_OnUpdateDebug2("raid12target")
-	Banana_OnUpdateDebug2("raid13target")
-	Banana_OnUpdateDebug2("raid14target")
-	Banana_OnUpdateDebug2("raid15target")
-	Banana_OnUpdateDebug2("raid16target")
-	Banana_OnUpdateDebug2("raid17target")
-	Banana_OnUpdateDebug2("raid18target")
-	Banana_OnUpdateDebug2("raid19target")
-	Banana_OnUpdateDebug2("raid20target")
-	Banana_OnUpdateDebug2("raid21target")
-	Banana_OnUpdateDebug2("raid22target")
-	Banana_OnUpdateDebug2("raid23target")
-	Banana_OnUpdateDebug2("raid24target")
-	Banana_OnUpdateDebug2("raid25target")
-	Banana_OnUpdateDebug2("raid26target")
-	Banana_OnUpdateDebug2("raid27target")
-end
-if Banana_BABA == 6 then
-	Banana_OnUpdateDebug2("raid28target")
-	Banana_OnUpdateDebug2("raid29target")
-	Banana_OnUpdateDebug2("raid30target")
-	Banana_OnUpdateDebug2("raid31target")
-	Banana_OnUpdateDebug2("raid32target")
-	Banana_OnUpdateDebug2("raid33target")
-	Banana_OnUpdateDebug2("raid34target")
-	Banana_OnUpdateDebug2("raid35target")
-	Banana_OnUpdateDebug2("raid36target")
-	Banana_OnUpdateDebug2("raid37target")
-	Banana_OnUpdateDebug2("raid38target")
-	Banana_OnUpdateDebug2("raid39target")
-	Banana_OnUpdateDebug2("raid40target")
-	Banana_OnUpdateDebug3("target")
-	Banana_OnUpdateDebug3("player")
-end
-if Banana_BABA == 7 then
-	Banana_OnUpdateDebug3("raid1")
-	Banana_OnUpdateDebug3("raid2")
-	Banana_OnUpdateDebug3("raid3")
-	Banana_OnUpdateDebug3("raid4")
-	Banana_OnUpdateDebug3("raid5")
-	Banana_OnUpdateDebug3("raid6")
-	Banana_OnUpdateDebug3("raid7")
-	Banana_OnUpdateDebug3("raid8")
-	Banana_OnUpdateDebug3("raid9")
-	Banana_OnUpdateDebug3("raid10")
-	Banana_OnUpdateDebug3("raid11")
-	Banana_OnUpdateDebug3("raid12")
-	Banana_OnUpdateDebug3("raid13")
-	Banana_OnUpdateDebug3("raid14")
-	Banana_OnUpdateDebug3("raid15")
-	Banana_OnUpdateDebug3("raid16")
-end
-if Banana_BABA == 8 then
-	Banana_OnUpdateDebug3("raid17")
-	Banana_OnUpdateDebug3("raid18")
-	Banana_OnUpdateDebug3("raid19")
-	Banana_OnUpdateDebug3("raid20")
-	Banana_OnUpdateDebug3("raid21")
-	Banana_OnUpdateDebug3("raid22")
-	Banana_OnUpdateDebug3("raid23")
-	Banana_OnUpdateDebug3("raid24")
-	Banana_OnUpdateDebug3("raid25")
-	Banana_OnUpdateDebug3("raid26")
-	Banana_OnUpdateDebug3("raid27")
-	Banana_OnUpdateDebug3("raid28")
-	Banana_OnUpdateDebug3("raid29")
-	Banana_OnUpdateDebug3("raid30")
-end
-if Banana_BABA == 9 then
-	Banana_OnUpdateDebug3("raid31")
-	Banana_OnUpdateDebug3("raid32")
-	Banana_OnUpdateDebug3("raid33")
-	Banana_OnUpdateDebug3("raid34")
-	Banana_OnUpdateDebug3("raid35")
-	Banana_OnUpdateDebug3("raid36")
-	Banana_OnUpdateDebug3("raid37")
-	Banana_OnUpdateDebug3("raid38")
-	Banana_OnUpdateDebug3("raid39")
-	Banana_OnUpdateDebug3("raid40")
-	Banana_OnUpdateDebug3("raid1target")
-	Banana_OnUpdateDebug3("raid2target")
-	Banana_OnUpdateDebug3("raid3target")
-	Banana_OnUpdateDebug3("raid4target")
-end
-if Banana_BABA == 10 then
-	Banana_OnUpdateDebug3("raid5target")
-	Banana_OnUpdateDebug3("raid6target")
-	Banana_OnUpdateDebug3("raid7target")
-	Banana_OnUpdateDebug3("raid8target")
-	Banana_OnUpdateDebug3("raid9target")
-	Banana_OnUpdateDebug3("raid10target")
-	Banana_OnUpdateDebug3("raid11target")
-	Banana_OnUpdateDebug3("raid12target")
-	Banana_OnUpdateDebug3("raid13target")
-	Banana_OnUpdateDebug3("raid14target")
-	Banana_OnUpdateDebug3("raid15target")
-	Banana_OnUpdateDebug3("raid16target")
-	Banana_OnUpdateDebug3("raid17target")
-	Banana_OnUpdateDebug3("raid18target")
-	Banana_OnUpdateDebug3("raid19target")
-	Banana_OnUpdateDebug3("raid20target")
-end
-if Banana_BABA == 11 then
-	Banana_OnUpdateDebug3("raid21target")
-	Banana_OnUpdateDebug3("raid22target")
-	Banana_OnUpdateDebug3("raid23target")
-	Banana_OnUpdateDebug3("raid24target")
-	Banana_OnUpdateDebug3("raid25target")
-	Banana_OnUpdateDebug3("raid26target")
-	Banana_OnUpdateDebug3("raid27target")
-	Banana_OnUpdateDebug3("raid28target")
-	Banana_OnUpdateDebug3("raid29target")
-	Banana_OnUpdateDebug3("raid30target")
-	Banana_OnUpdateDebug3("raid31target")
-	Banana_OnUpdateDebug3("raid32target")
-	Banana_OnUpdateDebug3("raid33target")
-	Banana_OnUpdateDebug3("raid34target")
-	Banana_OnUpdateDebug3("raid35target")
-	Banana_OnUpdateDebug3("raid36target")
-	Banana_OnUpdateDebug3("raid37target")
-	Banana_OnUpdateDebug3("raid38target")
-	Banana_OnUpdateDebug3("raid39target")
-	Banana_OnUpdateDebug3("raid40target")
-	Banana_BABA = 0;
-else	
-	Banana_BABA = Banana_BABA+1;
-end
-end
-
 
 function Banana_ResetTooltip()
-	for index=1, 10 do
-		local text = getglobal("BananaTooltipTextLeft"..index);
-		text:SetText(nil);
-		text = getglobal("BananaTooltipTextRight"..index);
-		text:SetText(nil);
+	for index = 1, 10 do
+		local text = getglobal("BananaTooltipTextLeft"..index)
+		text:SetText(nil)
+		text = getglobal("BananaTooltipTextRight"..index)
+		text:SetText(nil)
 	end
-	BananaTooltip:Hide();
-	BananaTooltip:SetOwner(UIParent, "ANCHOR_NONE"); 
-end
-
-function Banana_OnUpdateDebug2(unit)
-        if not BANANA_DEBUG then
-		BANANA_DEBUG = {};
-	end
-
-        if not BANANA_DEBUG["debuff"] then
-		BANANA_DEBUG["debuff"] = {};
-	end
-	
-	local index = 1;
-	while UnitDebuff(unit, index) do
-		local un = UnitName(unit);
-		Banana_ResetTooltip();
-		BananaTooltip:SetUnitDebuff(unit, index);
-		local debuffTexture, debuffApplications, debuffDispelType = UnitDebuff(unit, index);
-		local DebuffName = BananaTooltipTextLeft1:GetText() or "<noname>";
-
-
-	        if not BANANA_DEBUG["debuff"][debuffTexture] then
-			BANANA_DEBUG["debuff"][debuffTexture] = {};
-		end
-	        if not BANANA_DEBUG["debuff"][debuffTexture][(debuffDispelType or "none")] then
-			BANANA_DEBUG["debuff"][debuffTexture][(debuffDispelType or "none")] = {};
-		end
-	        if not BANANA_DEBUG["debuff"][debuffTexture][(debuffDispelType or "none")][DebuffName] then
-			BANANA_DEBUG["debuff"][debuffTexture][(debuffDispelType or "none")][DebuffName] = {};
-		end
-	    		if not BANANA_DEBUG["debuff"][debuffTexture][(debuffDispelType or "none")][DebuffName][(debuffApplications or "*")..":"..(BananaTooltipTextLeft2:GetText() or "<nodesc>")] then
-			BANANA_DEBUG["debuff"][debuffTexture][(debuffDispelType or "none")][DebuffName][(debuffApplications or "*")..":"..(BananaTooltipTextLeft2:GetText() or "<nodesc>")] = un;
-			Banana_Print("Log: "..DebuffName.." "..(debuffApplications or "*"));
-		end
-		index = index+1;
-	end
-end
-
-
-function Banana_OnUpdateDebug3(unit)
-        if not BANANA_DEBUG then
-		BANANA_DEBUG = {};
-	end
-
-        if not BANANA_DEBUG["buff"] then
-		BANANA_DEBUG["buff"] = {};
-	end
-	
-	local index = 1;
-	while UnitBuff(unit, index) do
-		local un = UnitName(unit);
-		Banana_ResetTooltip();
-		BananaTooltip:SetUnitBuff(unit, index);
-		local debuffTexture, debuffApplications = UnitBuff(unit, index);
-		local DebuffName = BananaTooltipTextLeft1:GetText() or "<noname>";
-
-
-	        if not BANANA_DEBUG["buff"][debuffTexture] then
-			BANANA_DEBUG["buff"][debuffTexture] = {};
-		end
-	        if not BANANA_DEBUG["buff"][debuffTexture][DebuffName] then
-			BANANA_DEBUG["buff"][debuffTexture][DebuffName] = {};
-		end
-	        if not BANANA_DEBUG["buff"][debuffTexture][DebuffName][(debuffApplications or "*")..":"..(BananaTooltipTextLeft2:GetText() or "<nodesc>")] then
-			BANANA_DEBUG["buff"][debuffTexture][DebuffName][(debuffApplications or "*")..":"..(BananaTooltipTextLeft2:GetText() or "<nodesc>")] = un;
-			Banana_Print("BuffLog: "..DebuffName.." "..(debuffApplications or "*"));
-		end
-		index = index+1;
-	end
+	BananaTooltip:Hide()
+	BananaTooltip:SetOwner(UIParent, "ANCHOR_NONE")
 end
 
 function Banana_IsNameplate(frame)
-  if frame:GetObjectType() ~= "Button" then return nil end
-  if not frame:IsShown() then return nil end
-  local child = frame:GetChildren()
-  if not child then return nil end
-  if not child:GetObjectType() == "StatusBar" then return nil end
-  
-	if frame:GetNumChildren() == 2 then
-		if not BananaShaguPlates then BananaShaguPlates = true end
-		return true
-	end
-	
-  local region = frame:GetRegions()
-  if not region then return nil end
-  if not region:GetObjectType() == "Texture" then return nil end
-  if not region:GetTexture() then return nil end
-  
-  return true
+	if frame:GetObjectType() ~= "Button" then return nil end
+	if not frame:IsShown() then return nil end
+	local child = frame:GetChildren()
+	if not child then return nil end
+	if not child:GetObjectType() == "StatusBar" then return nil end
+
+		if frame:GetNumChildren() == 2 then
+			if not shaguPlates then shaguPlates = true end
+			return true
+		end
+
+	local region = frame:GetRegions()
+	if not region then return nil end
+	if not region:GetObjectType() == "Texture" then return nil end
+	if not region:GetTexture() then return nil end
+
+	return true
 end
 
 function Banana_ScanNameplates(index)
-  if index == 9 then return nil end
-  local button = raidTargetIconTexCoords[index]
-  if not button then return nil end
-  
-  local bULx = button.ULx;
-  local bULy = button.ULy;
-	
-  local frames = { WorldFrame:GetChildren() }
-	
-  for _, nameplate in ipairs(frames) do
-    if Banana_IsNameplate(nameplate) then
-			if BananaShaguPlates then
+	if index == 9 then return nil end
+	local button = raidTargetIconTexCoords[index]
+	if not button then return nil end
+
+	local bULx = button.ULx
+	local bULy = button.ULy
+	local frames = { WorldFrame:GetChildren() }
+
+	for _, nameplate in ipairs(frames) do
+    	if Banana_IsNameplate(nameplate) then
+			if shaguPlates then
 				local baseplate, shaguplate = nameplate:GetChildren()
 				if shaguplate.raidicon:IsShown() then
 					local ULx,ULy = shaguplate.raidicon:GetTexCoord()
 					if ULx == bULx and ULy == bULy then
 						nameplate:Click()
-						Banana_UpdateStatus();
+						Banana_UpdateStatus()
 						return true
 					end
 				end
 			else
 				local _, _, _, _, _ , raidicon = nameplate:GetRegions()
 				if raidicon:IsShown() and raidicon:GetObjectType() then
-					if raidicon:GetTexture() then	
+					if raidicon:GetTexture() then
 						local ULx,ULy = raidicon:GetTexCoord()
-						
+
 						if ULx == bULx and ULy == bULy then
 							nameplate:Click()
-							Banana_UpdateStatus();
+							Banana_UpdateStatus()
 							return true
 						end
 					end
@@ -1654,6 +1061,220 @@ function Banana_ScanNameplates(index)
 			end
 		end
 	end
-	
+
 	return nil
+end
+
+function Banana_SetLayout(layout)
+	BANANA_BUTTON_LAYOUT = layout
+	Banana_Layout()
+end
+
+function Banana_Layout()
+	if BANANA_BUTTON_LAYOUT == 1 then
+		Banana_Layout1()
+		return
+	end
+	if BANANA_BUTTON_LAYOUT == 2 then
+		Banana_Layout2()
+		return
+	end
+	if BANANA_BUTTON_LAYOUT == 3 then
+		Banana_Layout3()
+		return
+	end
+	if BANANA_BUTTON_LAYOUT == 4 then
+		Banana_Layout4()
+		return
+	end
+	Banana_Layout5()
+end
+
+function Banana_Layout1()
+	RaidTargetFrame1Button:SetMovable(true)
+	RaidTargetFrame2Button:SetMovable(false)
+	RaidTargetFrame3Button:SetMovable(false)
+	RaidTargetFrame4Button:SetMovable(false)
+	RaidTargetFrame5Button:SetMovable(false)
+	RaidTargetFrame6Button:SetMovable(false)
+	RaidTargetFrame7Button:SetMovable(false)
+	RaidTargetFrame8Button:SetMovable(false)
+	RaidTargetFrame9Button:SetMovable(true)
+
+	RaidTargetFrame1Button:ClearAllPoints()
+	RaidTargetFrame2Button:ClearAllPoints()
+	RaidTargetFrame2Button:SetPoint("LEFT", RaidTargetFrame1Button, "RIGHT",4,0)
+	RaidTargetFrame3Button:ClearAllPoints()
+	RaidTargetFrame3Button:SetPoint("LEFT", RaidTargetFrame2Button, "RIGHT",4,0)
+	RaidTargetFrame4Button:ClearAllPoints()
+	RaidTargetFrame4Button:SetPoint("LEFT", RaidTargetFrame3Button, "RIGHT",4,0)
+	RaidTargetFrame5Button:ClearAllPoints()
+	RaidTargetFrame5Button:SetPoint("LEFT", RaidTargetFrame4Button, "RIGHT",4,0)
+	RaidTargetFrame6Button:ClearAllPoints()
+	RaidTargetFrame6Button:SetPoint("LEFT", RaidTargetFrame5Button, "RIGHT",4,0)
+	RaidTargetFrame7Button:ClearAllPoints()
+	RaidTargetFrame7Button:SetPoint("LEFT", RaidTargetFrame6Button, "RIGHT",4,0)
+	RaidTargetFrame8Button:ClearAllPoints()
+	RaidTargetFrame8Button:SetPoint("LEFT", RaidTargetFrame7Button, "RIGHT",4,0)
+	RaidTargetFrame9Button:ClearAllPoints()
+	
+	icons[1].MovingButton = 1
+	icons[2].MovingButton = 1
+	icons[3].MovingButton = 1
+	icons[4].MovingButton = 1
+	icons[5].MovingButton = 1
+	icons[6].MovingButton = 1
+	icons[7].MovingButton = 1
+	icons[8].MovingButton = 1
+	icons[9].MovingButton = 9
+end
+
+function Banana_Layout2()
+	RaidTargetFrame1Button:SetMovable(true)
+	RaidTargetFrame2Button:SetMovable(false)
+	RaidTargetFrame3Button:SetMovable(false)
+	RaidTargetFrame4Button:SetMovable(false)
+	RaidTargetFrame5Button:SetMovable(false)
+	RaidTargetFrame6Button:SetMovable(false)
+	RaidTargetFrame7Button:SetMovable(false)
+	RaidTargetFrame8Button:SetMovable(false)
+	RaidTargetFrame9Button:SetMovable(true)
+
+	RaidTargetFrame1Button:ClearAllPoints()
+	RaidTargetFrame2Button:ClearAllPoints()
+	RaidTargetFrame2Button:SetPoint("LEFT", RaidTargetFrame1Button, "RIGHT",4,0)
+	RaidTargetFrame3Button:ClearAllPoints()
+	RaidTargetFrame3Button:SetPoint("LEFT", RaidTargetFrame2Button, "RIGHT",4,0)
+	RaidTargetFrame4Button:ClearAllPoints()
+	RaidTargetFrame4Button:SetPoint("LEFT", RaidTargetFrame3Button, "RIGHT",4,0)
+	RaidTargetFrame5Button:ClearAllPoints()
+	RaidTargetFrame5Button:SetPoint("TOP", RaidTargetFrame1Button, "BOTTOM",0,-4)
+	RaidTargetFrame6Button:ClearAllPoints()
+	RaidTargetFrame6Button:SetPoint("LEFT", RaidTargetFrame5Button, "RIGHT",4,0)
+	RaidTargetFrame7Button:ClearAllPoints()
+	RaidTargetFrame7Button:SetPoint("LEFT", RaidTargetFrame6Button, "RIGHT",4,0)
+	RaidTargetFrame8Button:ClearAllPoints()
+	RaidTargetFrame8Button:SetPoint("LEFT", RaidTargetFrame7Button, "RIGHT",4,0)
+	RaidTargetFrame9Button:ClearAllPoints()
+
+	icons[1].MovingButton = 1
+	icons[2].MovingButton = 1
+	icons[3].MovingButton = 1
+	icons[4].MovingButton = 1
+	icons[5].MovingButton = 1
+	icons[6].MovingButton = 1
+	icons[7].MovingButton = 1
+	icons[8].MovingButton = 1
+	icons[9].MovingButton = 9
+end
+
+function Banana_Layout3()
+	RaidTargetFrame1Button:SetMovable(true)
+	RaidTargetFrame2Button:SetMovable(false)
+	RaidTargetFrame3Button:SetMovable(false)
+	RaidTargetFrame4Button:SetMovable(false)
+	RaidTargetFrame5Button:SetMovable(false)
+	RaidTargetFrame6Button:SetMovable(false)
+	RaidTargetFrame7Button:SetMovable(false)
+	RaidTargetFrame8Button:SetMovable(false)
+	RaidTargetFrame9Button:SetMovable(true)
+
+	RaidTargetFrame1Button:ClearAllPoints()
+	RaidTargetFrame2Button:ClearAllPoints()
+	RaidTargetFrame2Button:SetPoint("LEFT", RaidTargetFrame1Button, "RIGHT",4,0)
+	RaidTargetFrame3Button:ClearAllPoints()
+	RaidTargetFrame3Button:SetPoint("TOP", RaidTargetFrame1Button, "BOTTOM",0,-4)
+	RaidTargetFrame4Button:ClearAllPoints()
+	RaidTargetFrame4Button:SetPoint("LEFT", RaidTargetFrame3Button, "RIGHT",4,0)
+	RaidTargetFrame5Button:ClearAllPoints()
+	RaidTargetFrame5Button:SetPoint("TOP", RaidTargetFrame3Button, "BOTTOM",0,-4)
+	RaidTargetFrame6Button:ClearAllPoints()
+	RaidTargetFrame6Button:SetPoint("LEFT", RaidTargetFrame5Button, "RIGHT",4,0)
+	RaidTargetFrame7Button:ClearAllPoints()
+	RaidTargetFrame7Button:SetPoint("TOP", RaidTargetFrame5Button, "BOTTOM",0,-4)
+	RaidTargetFrame8Button:ClearAllPoints()
+	RaidTargetFrame8Button:SetPoint("LEFT", RaidTargetFrame7Button, "RIGHT",4,0)
+	RaidTargetFrame9Button:ClearAllPoints()
+
+	icons[1].MovingButton = 1
+	icons[2].MovingButton = 1
+	icons[3].MovingButton = 1
+	icons[4].MovingButton = 1
+	icons[5].MovingButton = 1
+	icons[6].MovingButton = 1
+	icons[7].MovingButton = 1
+	icons[8].MovingButton = 1
+	icons[9].MovingButton = 9
+end
+
+function Banana_Layout4()
+	RaidTargetFrame1Button:SetMovable(true)
+	RaidTargetFrame2Button:SetMovable(false)
+	RaidTargetFrame3Button:SetMovable(false)
+	RaidTargetFrame4Button:SetMovable(false)
+	RaidTargetFrame5Button:SetMovable(false)
+	RaidTargetFrame6Button:SetMovable(false)
+	RaidTargetFrame7Button:SetMovable(false)
+	RaidTargetFrame8Button:SetMovable(false)
+	RaidTargetFrame9Button:SetMovable(true)
+	RaidTargetFrame1Button:ClearAllPoints()
+	RaidTargetFrame2Button:ClearAllPoints()
+	RaidTargetFrame2Button:SetPoint("TOP", RaidTargetFrame1Button, "BOTTOM",0,-4)
+	RaidTargetFrame3Button:ClearAllPoints()
+	RaidTargetFrame3Button:SetPoint("TOP", RaidTargetFrame2Button, "BOTTOM",0,-4)
+	RaidTargetFrame4Button:ClearAllPoints()
+	RaidTargetFrame4Button:SetPoint("TOP", RaidTargetFrame3Button, "BOTTOM",0,-4)
+	RaidTargetFrame5Button:ClearAllPoints()
+	RaidTargetFrame5Button:SetPoint("TOP", RaidTargetFrame4Button, "BOTTOM",0,-4)
+	RaidTargetFrame6Button:ClearAllPoints()
+	RaidTargetFrame6Button:SetPoint("TOP", RaidTargetFrame5Button, "BOTTOM",0,-4)
+	RaidTargetFrame7Button:ClearAllPoints()
+	RaidTargetFrame7Button:SetPoint("TOP", RaidTargetFrame6Button, "BOTTOM",0,-4)
+	RaidTargetFrame8Button:ClearAllPoints()
+	RaidTargetFrame8Button:SetPoint("TOP", RaidTargetFrame7Button, "BOTTOM",0,-4)
+	RaidTargetFrame9Button:ClearAllPoints()
+
+	icons[1].MovingButton = 1
+	icons[2].MovingButton = 1
+	icons[3].MovingButton = 1
+	icons[4].MovingButton = 1
+	icons[5].MovingButton = 1
+	icons[6].MovingButton = 1
+	icons[7].MovingButton = 1
+	icons[8].MovingButton = 1
+	icons[9].MovingButton = 9
+end
+
+function Banana_Layout5()
+	RaidTargetFrame1Button:SetMovable(true)
+	RaidTargetFrame2Button:SetMovable(true)
+	RaidTargetFrame3Button:SetMovable(true)
+	RaidTargetFrame4Button:SetMovable(true)
+	RaidTargetFrame5Button:SetMovable(true)
+	RaidTargetFrame6Button:SetMovable(true)
+	RaidTargetFrame7Button:SetMovable(true)
+	RaidTargetFrame8Button:SetMovable(true)
+	RaidTargetFrame9Button:SetMovable(true)
+
+	RaidTargetFrame1Button:ClearAllPoints()
+	RaidTargetFrame2Button:ClearAllPoints()
+	RaidTargetFrame3Button:ClearAllPoints()
+	RaidTargetFrame4Button:ClearAllPoints()
+	RaidTargetFrame5Button:ClearAllPoints()
+	RaidTargetFrame6Button:ClearAllPoints()
+	RaidTargetFrame7Button:ClearAllPoints()
+	RaidTargetFrame8Button:ClearAllPoints()
+	RaidTargetFrame9Button:ClearAllPoints()
+
+	icons[1].MovingButton = 1
+	icons[2].MovingButton = 2
+	icons[3].MovingButton = 3
+	icons[4].MovingButton = 4
+	icons[5].MovingButton = 5
+	icons[6].MovingButton = 6
+	icons[7].MovingButton = 7
+	icons[8].MovingButton = 8
+	icons[9].MovingButton = 9
+
+	Banana_ReloadFramePositions()
 end

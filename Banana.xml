@@ -1,6 +1,5 @@
 ﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
     ..\..\FrameXML\UI.xsd">
-
     <Frame name="BananaFrame">
         <Scripts>
             <OnLoad>
@@ -14,8 +13,7 @@
             </OnUpdate>
         </Scripts>
     </Frame>
-
-    <Frame clampedToScreen="false" name="BananaMtSymbolTemplate" virtual="true" movable="false">
+    <Frame name="BananaMtSymbolTemplate" virtual="true" movable="false">
         <Size>
             <AbsDimension x="16" y="16"/>
         </Size>
@@ -36,11 +34,7 @@
             </Layer>
 		</Layers>
     </Frame>
-
-    
-
-
-    <CheckButton clampedToScreen="true" name="BananaButtonTemplate" inherits="ActionButtonTemplate" virtual="true" movable="false">
+    <CheckButton name="BananaButtonTemplate" clampedToScreen="true" inherits="ActionButtonTemplate" virtual="true" movable="false">
         <Size>
             <AbsDimension x="36" y="36"/>
         </Size>
@@ -62,7 +56,7 @@
                 Banana_ButtonOnEnter();
             </OnEnter>
             <OnLeave>
-                Banana_ButtonOnLeave();
+                GameTooltip:Hide();
             </OnLeave>
         </Scripts>
 		<Layers>
@@ -93,18 +87,15 @@
 				</Texture>
             </Layer>
 		</Layers>
-    </CheckButton>
-    
-	<CheckButton parent="UIParent" name="RaidTargetFrame1Button" id="1" inherits="BananaButtonTemplate" hidden="false"/>
-	<CheckButton parent="UIParent" name="RaidTargetFrame2Button" id="2" inherits="BananaButtonTemplate" hidden="false"/>
-	<CheckButton parent="UIParent" name="RaidTargetFrame3Button" id="3" inherits="BananaButtonTemplate" hidden="false"/>
-	<CheckButton parent="UIParent" name="RaidTargetFrame4Button" id="4" inherits="BananaButtonTemplate" hidden="false"/>
-	<CheckButton parent="UIParent" name="RaidTargetFrame5Button" id="5" inherits="BananaButtonTemplate" hidden="false"/>
-	<CheckButton parent="UIParent" name="RaidTargetFrame6Button" id="6" inherits="BananaButtonTemplate" hidden="false"/>
-	<CheckButton parent="UIParent" name="RaidTargetFrame7Button" id="7" inherits="BananaButtonTemplate" hidden="false"/>
-	<CheckButton parent="UIParent" name="RaidTargetFrame8Button" id="8" inherits="BananaButtonTemplate" hidden="false"/>
-	<CheckButton parent="UIParent" name="RaidTargetFrame9Button" id="9" inherits="BananaButtonTemplate" hidden="false"/>
-
+    </CheckButton> 
+	<CheckButton name="RaidTargetFrame1Button" parent="UIParent" id="1" inherits="BananaButtonTemplate" hidden="false"/>
+	<CheckButton name="RaidTargetFrame2Button" parent="UIParent" id="2" inherits="BananaButtonTemplate" hidden="false"/>
+	<CheckButton name="RaidTargetFrame3Button" parent="UIParent" id="3" inherits="BananaButtonTemplate" hidden="false"/>
+	<CheckButton name="RaidTargetFrame4Button" parent="UIParent" id="4" inherits="BananaButtonTemplate" hidden="false"/>
+	<CheckButton name="RaidTargetFrame5Button" parent="UIParent" id="5" inherits="BananaButtonTemplate" hidden="false"/>
+	<CheckButton name="RaidTargetFrame6Button" parent="UIParent" id="6" inherits="BananaButtonTemplate" hidden="false"/>
+	<CheckButton name="RaidTargetFrame7Button" parent="UIParent" id="7" inherits="BananaButtonTemplate" hidden="false"/>
+	<CheckButton name="RaidTargetFrame8Button" parent="UIParent" id="8" inherits="BananaButtonTemplate" hidden="false"/>
+	<CheckButton name="RaidTargetFrame9Button" parent="UIParent" id="9" inherits="BananaButtonTemplate" hidden="false"/>
 	<GameTooltip name="BananaTooltip" frameStrata="LOW" toplevel="true" movable="true" parent="UIParent" inherits="GameTooltipTemplate" visible="false" />
-
 </Ui>
