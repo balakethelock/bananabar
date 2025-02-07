@@ -1,36 +1,35 @@
 ﻿<Bindings>
 	<Binding name="BANANA_TARGET_SYMBOL1" header="BANANA_PLUGINNAME">
-		Banana_TargetSymbol1()
+		Banana_TargetRaidSymbol(1)
 	</Binding>
 	<Binding name="BANANA_TARGET_SYMBOL2" header="BANANA_PLUGINNAME">
-		Banana_TargetSymbol2()
+		Banana_TargetRaidSymbol(2)
 	</Binding>
 	<Binding name="BANANA_TARGET_SYMBOL3" header="BANANA_PLUGINNAME">
-		Banana_TargetSymbol3()
+		Banana_TargetRaidSymbol(3)
 	</Binding>
 	<Binding name="BANANA_TARGET_SYMBOL4" header="BANANA_PLUGINNAME">
-		Banana_TargetSymbol4()
+		Banana_TargetRaidSymbol(4)
 	</Binding>
 	<Binding name="BANANA_TARGET_SYMBOL5" header="BANANA_PLUGINNAME">
-		Banana_TargetSymbol5()
+		Banana_TargetRaidSymbol(5)
 	</Binding>
 	<Binding name="BANANA_TARGET_SYMBOL6" header="BANANA_PLUGINNAME">
-		Banana_TargetSymbol6()
+		Banana_TargetRaidSymbol(6)
 	</Binding>
 	<Binding name="BANANA_TARGET_SYMBOL7" header="BANANA_PLUGINNAME">
-		Banana_TargetSymbol7()
+		Banana_TargetRaidSymbol(7)
 	</Binding>
 	<Binding name="BANANA_TARGET_SYMBOL8" header="BANANA_PLUGINNAME">
-		Banana_TargetSymbol8()
+		Banana_TargetRaidSymbol(8)
 	</Binding>
-	<Binding name="Reset Button Positions" header="BANANA_PLUGINNAME">
-		Banana_ResetAll();
+	<Binding name="BANANA_TARGET_SYMBOL9" header="BANANA_PLUGINNAME">
+		Banana_TargetRaidSymbol(9)
 	</Binding>
 	<Binding name="Open Config Window" header="BANANA_PLUGINNAME">
-		Banana_Command("/bananabar");
+		Banana_Toggle("/bananabar")
 	</Binding>
 	<Binding name="Clear all Raid Symbols" header="BANANA_PLUGINNAME">
-		Banana_ClearRaidSymbols();
+		Banana_ClearAllSymbols()
 	</Binding>
-	
 </Bindings>
