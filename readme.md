@@ -1,6 +1,8 @@
 # BananaBar Raid Symbols
-This addon Allows you to select marked units with ease. If you launch game with ![SuperWoW](https://github.com/balakethelock/SuperWoW) this version will take advantage of it to improve consistency.
+This addon Allows you to select marked units with ease. If you launch game with ![SuperWoW](https://github.com/balakethelock/SuperWoW) this version will take advantage of it to improve consistency.<br>
+![marks](https://github.com/user-attachments/assets/065dc275-f684-4a23-9f79-b522c56ba2c1)
 ## How to Use 
+
 Left mouse on raid symbol or hunters mark button: 
 Search for a mob with the specified symbol. BananaBar searches all raid or party members and their current targets for the specified symbol or hunters mark. If a unit is found that contains the specific symbol it will be targeted.
 If no units are found an error sound is played.
@@ -29,4 +31,7 @@ Settings dialog can be opened with one of the following commands
 /bb
 /bbr
 /banana
-/bananabar 
+/bananabar
+
+![config](https://github.com/user-attachments/assets/492d386d-bf01-49cf-8bc8-d4b138df47d0)
+
