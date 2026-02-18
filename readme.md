@@ -33,5 +33,5 @@ Settings dialog can be opened with one of the following commands
 /banana
 /bananabar
 
-![config](https://github.com/user-attachments/assets/492d386d-bf01-49cf-8bc8-d4b138df47d0)
+<img width="428" height="633" alt="image" src="https://github.com/user-attachments/assets/b7f5442f-f08e-4704-95b0-f304d969e52a" />
 
