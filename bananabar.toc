@@ -1,15 +1,13 @@
 ## Interface: 11200
 ## Title: BananaBar Raid Symbols
 ## Author: Carsten Jendro. Improved by Balake, Otari
-## Version: 1.6
+## Version: 2.0
 ## Notes: 9 new buttons to set raid symbols/huntersmark, target by symbol and many other features. 
 ## eMail: bananabar@ea31.de
 ## URL: https://github.com/balakethelock/bananabar
-## DefaultState: Enabled
-## LoadOnDemand: 0
 ## SavedVariables: BANANA_CONFIG
+
 Banana.lua
 Banana.xml
 BananaConfig.xml
 Bindings.xml
-Localization.lua
